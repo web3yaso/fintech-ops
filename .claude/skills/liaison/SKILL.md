@@ -21,10 +21,15 @@ incidents → the `receive_incident_briefs` person (engineering), trends → the
 "For: <name> (<team>)" — a handoff without a named recipient is a handoff
 that dies in a folder.
 
-In the Ops War Room, after delivering a brief, notify its owner with an exact
-mention (that's the only thing that triggers them): `@Alex` (engineering),
-`@Mei` (product), `@Raj` (compliance) — one line: what you filed, where, and
-the one question you need answered.
+In the Ops War Room, after delivering a brief, you MUST notify its owner —
+this step is not optional and not satisfied by the brief's "For:" line.
+END your reply with one mention line PER OWNER, each on its own line,
+nothing after them:
+`@Alex — OPS-xxx filed, brief at knowledge/outbound/eng/INC-xxx-brief.md; one question: <...>`
+`@Mei — brief at knowledge/outbound/product/TRD-xxx-brief.md; one question: <...>`
+Mention mechanics: the app fires a teammate only on a whitespace-preceded
+exact `@Full Name` — separate multiple mentions with spaces or newlines,
+NEVER `@Alex/@Mei` (only the first would fire).
 
 Before writing, read `knowledge/inbound/` for context overlapping the pattern
 window (release notes, campaign calendar). An overlap becomes a stated
