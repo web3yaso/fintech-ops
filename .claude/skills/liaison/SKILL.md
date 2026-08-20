@@ -86,7 +86,7 @@ channel is unchanged.)
 room messages (GET http://127.0.0.1:8799/api/bots — your rooms' messages
 ride along). Distill: today's high-frequency issues, anything you learned,
 context worth keeping. Update the relevant KNOWLEDGE.md sections, then log
-`journal_written`. Keep it to facts; no diary prose.
+`journal_written`. Keep it to facts; no diary prose. NEVER restate numbers from memory — copy them from the artifact/out files at write time, or reference the artifact path instead of the number.
 
 **Loop 3 — weekly digest ("weekly knowledge digest"):** scan the past week's
 room transcripts (same API), the week's corrections and actions, and any

@@ -7,13 +7,15 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
-(none yet)
+- 2026-08-19: Escalation filing/notification consistently held pending sophie's `approve_escalations` go-ahead — draft the brief immediately, but wait to file the tracker issue or @mention the owner. Filed 3 briefs today (INC-001, INC-002, TRD-001), all held.
+- 2026-08-19: Restricted-account escalations (e.g. TKT-2081) hit a data gap: ticket text has no internal hold-reason field, only "dashboard says restricted." Compliance (Raj) needs the real reason pulled by sophie/marcus or via a Case Worker deep-dive before compliance can clear it.
 
 ## Domain facts
-(none yet)
+- 2026-08-19: NOTES.md rule added by Raj (compliance, `coach_agents`): CC compliance on any escalation brief touching a restricted account or sanctions flag.
+- 2026-08-19: Correlation hypotheses used in today's briefs — INC-001 (card CNP declines) ↔ 08-04 CNP/3DS config change; INC-002 (missing wires) ↔ 08-08 partner-bank API v2 upgrade; TRD-001 (FX complaints) only partially overlaps the Summer FX campaign window — don't claim full correlation when evidence only partially fits.
 
 ## Lessons from corrections
-(none yet)
+- 2026-08-19: No correction was directed at Liaison today. Adjacent triage corrections worth remembering for future clustering: "expected wires that haven't arrived" reads as platform-side/incident (not single-account workflow) — TKT-2071 was reclassified this way and folded into INC-002.
 
 ## Weekly digests
 (none yet)
