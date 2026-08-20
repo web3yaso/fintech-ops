@@ -177,11 +177,11 @@ def main():
                               "proposals today.' Otherwise post a digest "
                               "addressed to sophie: for each proposal show id, "
                               "proposer, target skill, rationale, the old→new "
-                              "diff, and the ready-to-copy decision commands "
-                              "(`python -m src.skill_proposals apply --id SCP-xxx "
-                              "--as sophie` / `... reject --id SCP-xxx --as sophie "
-                              "--reason \"...\"`). Recommend approve or reject "
-                              "for each with one honest sentence — sophie "
+                              "diff, then tell sophie she can decide right here "
+                              "in chat — reply 'approve SCP-xxx' or 'reject "
+                              "SCP-xxx: reason' and you will execute it per your "
+                              "SKILL.md's decision section. Recommend approve or "
+                              "reject for each with one honest sentence — sophie "
                               "decides, you only advise."})
                 print(f"routine created: {pname} (daily 21:45)")
         dname = f"{name} — weekly knowledge digest"
