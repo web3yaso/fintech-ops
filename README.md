@@ -1,7 +1,14 @@
-# Ops Control Tower — AI ops team for a cross-border fintech
+# Ops Control Tower — one ops owner + an AI execution layer
 
-**Loop take-home · Sophie Huang** · 📹 Video: _[link goes here]_ ·
-Zero-install artifact: `reports/ops-brief-2026-W33.html` (open in any browser)
+**Loop take-home · Sophie Huang**
+
+**⏱ Try it in 2 seconds:** open **`reports/console-snapshot.html`** — a
+zero-install snapshot of a real run (queue with every score explained,
+incident/trend cards with closure states, the $118k wire work package, the
+audit trail). No key, no clone, works offline. · 📹 Video: _[link goes here]_
+· Weekly brief: `reports/ops-brief-2026-W33.html` · Full war room on your own
+machine: `scripts/setup_demo.sh --dry-run` (checksum- & notarization-verified,
+no sudo, offline by default)
 
 Ops handles every ticket as an isolated unit, so the expensive problems — the
 ones that live *across* tickets — go unseen. This tool reclaims them: it

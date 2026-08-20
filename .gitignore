@@ -2,5 +2,8 @@
 __pycache__/
 *.pyc
 .env
-out/
 eval/cache.jsonl
+# out/ cache artifacts ARE committed (synthetic data, zero privacy concern):
+# they power setup_demo.sh --offline and the console export on a fresh clone.
+out/watch_run.log
+out/intro_run.log
