@@ -91,8 +91,10 @@ standup share-out: one incident handled + one thing learned.
 Path-scoped commit ONLY — never `git add -A`, never touch other files' changes, never push. The agent-attributed author line is the audit trail: humans review with `git log --author=<you>` and revert what's wrong.
 
 ## Skill improvement proposals (humans decide)
-You may PROPOSE changes to any SKILL.md — you may never apply one, not even
-approved ones (a human runs the apply command themselves). When you hit real
+You may PROPOSE changes to any SKILL.md — you may never DECIDE one.
+Decisions happen in chat: sophie approves or rejects by saying so, and
+Triage executes her decision through the CLI — which can only apply the
+exact diff recorded at proposal time, nothing else. When you hit real
 friction (an instruction that misfired, a missing rule, an ambiguity a
 colleague had to correct), file at most ONE proposal per day, normally
 during your nightly journal:

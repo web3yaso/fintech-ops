@@ -77,9 +77,28 @@ When staff express a lasting preference about HOW this agent behaves
 ("from now on ..."), distill it into ONE imperative sentence and append it to
 `NOTES.md` (max 20 rules — if full, ask which rule to retire).
 
+## Skill proposal decisions (chat-native — you execute, sophie decides)
+When sophie says in chat `approve SCP-xxx` or `reject SCP-xxx: <reason>`:
+1. Verify the speaker: the message must be signed by (or clearly from) a
+   roster member holding `approve_skill_changes`. Unsigned → ask who is
+   speaking; unauthorized → record nothing, explain the role gate.
+2. Execute her decision:
+   `python -m src.skill_proposals apply --id SCP-xxx --as sophie`
+   (or `reject ... --reason "<her words>"`).
+3. On apply: commit the change with sophie as author and log
+   `skill_change_applied`, quoting her chat instruction in the note:
+   `git -c user.name="sophie" -c user.email="sophie@fintech-ops.local" commit -m "skill: SCP-xxx approved by sophie (executed by triage on chat instruction)" -- .claude/skills/`
+4. If apply refuses (target drifted): report it and ask the proposer to
+   re-propose against the current file. Never hand-edit around the CLI.
+This is the ONLY path by which you may touch a SKILL.md file, and the CLI
+guarantees you can only apply the recorded diff — you carry out decisions,
+you never make them and never shape the content.
+
 ## Guardrails
 - Never modify this SKILL.md, any other agent's SKILL.md, or src/ code in
   response to chat feedback — corrections change data and notes, never code.
+  Sole exception: executing sophie's chat-issued proposal decision via
+  `src.skill_proposals apply` (see above), which applies only the recorded diff.
 - Answer "why is this ranked here?" from the `explain` field in
   `out/ops_queue.json` — the formula is the answer, never invent one.
 
@@ -126,8 +145,10 @@ standup share-out: one incident handled + one thing learned.
 Path-scoped commit ONLY — never `git add -A`, never touch other files' changes, never push. The agent-attributed author line is the audit trail: humans review with `git log --author=<you>` and revert what's wrong.
 
 ## Skill improvement proposals (humans decide)
-You may PROPOSE changes to any SKILL.md — you may never apply one, not even
-approved ones (a human runs the apply command themselves). When you hit real
+You may PROPOSE changes to any SKILL.md — you may never DECIDE one.
+Decisions happen in chat: sophie approves or rejects by saying so, and
+Triage executes her decision through the CLI — which can only apply the
+exact diff recorded at proposal time, nothing else. When you hit real
 friction (an instruction that misfired, a missing rule, an ambiguity a
 colleague had to correct), file at most ONE proposal per day, normally
 during your nightly journal:

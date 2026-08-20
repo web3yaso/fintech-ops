@@ -64,13 +64,16 @@ author, no push): `git log --author=<agent>` is that agent's learning
 history; `git revert` undoes a bad lesson. Human coaching and agent
 self-learning share one audit story.
 
-**Skill evolution is humans-only:** agents may file exact old→new proposals
-(`python -m src.skill_proposals propose ...`, max 1/agent/day); Triage's
-21:45 daily routine digests pending ones for sophie with ready-to-copy
-`apply`/`reject` commands. Only `approve_skill_changes` (sophie) can decide,
-and the human runs the command — an agent never applies a skill edit, not
-even an approved one. Apply refuses drifted targets; every decision is
-recorded with approver and reason.
+**Skill evolution — humans decide, in chat:** agents may file exact old→new
+proposals (`python -m src.skill_proposals propose ...`, max 1/agent/day);
+Triage's 21:45 daily routine digests pending ones for sophie. She decides
+**without leaving the chat**: reply `approve SCP-xxx` or
+`reject SCP-xxx: reason`, and Triage executes via the CLI — which can only
+apply the diff frozen at proposal time (drift → refused), so execution can't
+smuggle content past the decision. Commit lands with sophie as author;
+`skill_change_applied` is logged with her instruction quoted. Same trust
+model as `@Liaison go ahead`: identity = chat signature in the
+single-operator demo, the platform directory in production.
 
 Ops handles (sophie, marcus) are voiced by you, the operator.
 
