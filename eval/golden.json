@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "description": "Hand-labeled golden set for the enrichment eval. 24 tickets covering all six data segments. Labeled 2026-08-19 against data/tickets.csv; grows automatically from feedback/corrections.jsonl (Channel 1).",
+    "severity_rubric": {
+      "4": "security/fraud/regulatory exposure, or >= $100k funds impact",
+      "3": "money movement or account function actively blocked",
+      "2": "degraded experience or financial dissatisfaction; nothing hard-blocked",
+      "1": "how-to / informational"
+    },
+    "scoring_rules": {
+      "segment": "exact match",
+      "ops_workflow": "exact match",
+      "severity": "correct within +/-1",
+      "risk_flags": "set equality",
+      "amount_usd": "exact within $1; null must be null (extracted, not inferred)",
+      "cluster": "membership hit rate per cluster (detector layer, judged separately from enrichment fields)"
+    },
+    "clusters": {
+      "INC-DECLINES": "online card declines burst, Aug 4-7, 14 tickets expected in full run",
+      "INC-WIRES": "delayed inbound USD wires burst, Aug 8-11, 9 tickets expected in full run",
+      "TRD-FX": "FX pricing complaint trend, Jul 20 - Aug 7, 11 tickets expected in full run"
+    },
+    "eval_mode_contract": "run_eval.py MUST run with Channel-1 hard overrides disabled (few-shot injection stays on), so before/after-corrections measures generalization, not the override switch."
+  },
+  "tickets": [
+    { "ticket_id": "TKT-2001", "segment": "faq", "ops_workflow": "faq_selfserve", "severity": 1, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2007", "segment": "faq", "ops_workflow": "faq_selfserve", "severity": 1, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2027", "segment": "faq", "ops_workflow": "faq_selfserve", "severity": 1, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2024", "segment": "faq", "ops_workflow": "faq_selfserve", "severity": 1, "risk_flags": [], "amount_usd": null, "cluster": null },
+
+    { "ticket_id": "TKT-2059", "segment": "incident_candidate", "ops_workflow": "card_ops", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": "INC-DECLINES" },
+    { "ticket_id": "TKT-2063", "segment": "incident_candidate", "ops_workflow": "card_ops", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": "INC-DECLINES" },
+    { "ticket_id": "TKT-2068", "segment": "incident_candidate", "ops_workflow": "card_ops", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": "INC-DECLINES" },
+    { "ticket_id": "TKT-2083", "segment": "incident_candidate", "ops_workflow": "card_ops", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": "INC-DECLINES" },
+
+    { "ticket_id": "TKT-2071", "segment": "incident_candidate", "ops_workflow": "payment_investigation", "severity": 3, "risk_flags": [], "amount_usd": 42000, "cluster": "INC-WIRES" },
+    { "ticket_id": "TKT-2072", "segment": "incident_candidate", "ops_workflow": "payment_investigation", "severity": 4, "risk_flags": [], "amount_usd": 118000, "cluster": "INC-WIRES" },
+    { "ticket_id": "TKT-2085", "segment": "incident_candidate", "ops_workflow": "payment_investigation", "severity": 4, "risk_flags": [], "amount_usd": 118000, "cluster": "INC-WIRES" },
+    { "ticket_id": "TKT-2074", "segment": "incident_candidate", "ops_workflow": "payment_investigation", "severity": 3, "risk_flags": [], "amount_usd": 31500, "cluster": "INC-WIRES" },
+
+    { "ticket_id": "TKT-2049", "segment": "trend_candidate", "ops_workflow": "fx_pricing", "severity": 2, "risk_flags": ["churn_risk"], "amount_usd": null, "cluster": "TRD-FX" },
+    { "ticket_id": "TKT-2055", "segment": "trend_candidate", "ops_workflow": "fx_pricing", "severity": 2, "risk_flags": ["churn_risk"], "amount_usd": 75000, "cluster": "TRD-FX" },
+    { "ticket_id": "TKT-2086", "segment": "trend_candidate", "ops_workflow": "fx_pricing", "severity": 2, "risk_flags": ["churn_risk"], "amount_usd": null, "cluster": "TRD-FX" },
+    { "ticket_id": "TKT-2057", "segment": "trend_candidate", "ops_workflow": "fx_pricing", "severity": 2, "risk_flags": ["churn_risk"], "amount_usd": null, "cluster": "TRD-FX" },
+
+    { "ticket_id": "TKT-2079", "segment": "workflow", "ops_workflow": "fraud_ato", "severity": 4, "risk_flags": ["ato", "access_control"], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2080", "segment": "workflow", "ops_workflow": "account_admin", "severity": 4, "risk_flags": ["access_control"], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2081", "segment": "workflow", "ops_workflow": "account_admin", "severity": 4, "risk_flags": ["compliance_hold"], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2082", "segment": "workflow", "ops_workflow": "fraud_ato", "severity": 4, "risk_flags": ["fraud"], "amount_usd": 4850, "cluster": null },
+
+    { "ticket_id": "TKT-2087", "segment": "workflow", "ops_workflow": "kyb_onboarding", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2090", "segment": "workflow", "ops_workflow": "account_admin", "severity": 2, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2092", "segment": "workflow", "ops_workflow": "card_ops", "severity": 2, "risk_flags": [], "amount_usd": null, "cluster": null },
+    { "ticket_id": "TKT-2046", "segment": "workflow", "ops_workflow": "payment_investigation", "severity": 3, "risk_flags": [], "amount_usd": null, "cluster": null }
+  ]
+}

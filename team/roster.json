@@ -1,0 +1,56 @@
+{
+  "_note": "Demo personas (SIMULATED people, real mechanism). The war-room OPERATOR IS sophie — incident manager: bots address her by name when a declared pattern needs an escalation decision; only she (approve_escalations) green-lights Liaison. Cross-team colleagues are visible as persona bots (staged_as_bot); marcus is voiced by the operator when needed. In production the roster maps to the chat platform's directory.",
+  "people": [
+    {
+      "handle": "sophie",
+      "name": "Sophie Huang",
+      "team": "ops",
+      "roles": [
+        "correct_labels",
+        "coach_agents",
+        "approve_drafts",
+        "approve_escalations"
+      ],
+      "staged_as_bot": false,
+      "position": "incident manager (war-room operator)"
+    },
+    {
+      "handle": "marcus",
+      "name": "Marcus Lee",
+      "team": "ops",
+      "roles": [
+        "correct_labels",
+        "coach_agents"
+      ],
+      "staged_as_bot": false
+    },
+    {
+      "handle": "alex",
+      "name": "Alex Osei",
+      "team": "engineering",
+      "roles": [
+        "receive_incident_briefs"
+      ],
+      "staged_as_bot": true
+    },
+    {
+      "handle": "mei",
+      "name": "Mei Tanaka",
+      "team": "product",
+      "roles": [
+        "receive_trend_briefs"
+      ],
+      "staged_as_bot": true
+    },
+    {
+      "handle": "raj",
+      "name": "Raj Patel",
+      "team": "compliance",
+      "roles": [
+        "receive_risk_escalations",
+        "coach_agents"
+      ],
+      "staged_as_bot": true
+    }
+  ]
+}

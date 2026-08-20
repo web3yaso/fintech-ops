@@ -1,0 +1,7 @@
+openai>=1.40
+pydantic>=2.7
+pytest>=8.0
+# Day 2 (mock helpdesk):
+# fastapi
+# uvicorn
+# httpx  (fastapi TestClient)

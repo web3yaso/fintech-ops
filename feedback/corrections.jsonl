@@ -1,0 +1,3 @@
+{"ticket_id": "TKT-2071", "field": "segment", "was": "workflow", "should_be": "incident_candidate", "note": "expected inbound wires that have not arrived look platform-side, not single-account — treat as incident candidates", "author": "sophie", "date": "2026-08-19"}
+{"ticket_id": "TKT-2079", "field": "ops_workflow", "was": "account_admin", "should_be": "fraud_ato", "note": "an unrecognized admin user is a possible account takeover — the fraud workflow owns it, not account admin", "author": "sophie", "date": "2026-08-19"}
+{"ticket_id": "TKT-2090", "field": "ops_workflow", "was": "payment_investigation", "should_be": "account_admin", "note": "statement reconciliation, not a payment trace", "author": "sophie", "date": "2026-08-19"}
