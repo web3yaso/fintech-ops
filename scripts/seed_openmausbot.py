@@ -165,6 +165,25 @@ def main():
                           "corrections and room messages; update KNOWLEDGE.md; "
                           "log journal_written."})
             print(f"routine created: {jname} (daily 21:30)")
+        if name == "Triage":
+            pname = "Triage — daily skill-proposal digest for sophie"
+            if pname not in existing_routines:
+                api(port, "POST", "/api/routines", {
+                    "name": pname, "botId": bid, "runOn": "maus", "enabled": True,
+                    "schedule": {"type": "daily", "time": "21:45",
+                                 "weekdays": [0, 1, 2, 3, 4, 5, 6]},
+                    "prompt": "Run `python -m src.skill_proposals list`. If no "
+                              "pending proposals, reply exactly 'No skill "
+                              "proposals today.' Otherwise post a digest "
+                              "addressed to sophie: for each proposal show id, "
+                              "proposer, target skill, rationale, the old→new "
+                              "diff, and the ready-to-copy decision commands "
+                              "(`python -m src.skill_proposals apply --id SCP-xxx "
+                              "--as sophie` / `... reject --id SCP-xxx --as sophie "
+                              "--reason \"...\"`). Recommend approve or reject "
+                              "for each with one honest sentence — sophie "
+                              "decides, you only advise."})
+                print(f"routine created: {pname} (daily 21:45)")
         dname = f"{name} — weekly knowledge digest"
         if dname not in existing_routines:
             api(port, "POST", "/api/routines", {

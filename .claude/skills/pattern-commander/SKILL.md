@@ -100,3 +100,14 @@ standup share-out: one incident handled + one thing learned.
 **Committing your knowledge (all loops):** after ANY change to your KNOWLEDGE.md, commit it yourself, in the same turn:
 `git -c user.name="<your-skill-name>" -c user.email="<your-skill-name>@fintech-ops.local" commit -m "knowledge(<your-skill-name>): <journal|digest|lesson> <date>" -- .claude/skills/<your-dir>/KNOWLEDGE.md`
 Path-scoped commit ONLY — never `git add -A`, never touch other files' changes, never push. The agent-attributed author line is the audit trail: humans review with `git log --author=<you>` and revert what's wrong.
+
+## Skill improvement proposals (humans decide)
+You may PROPOSE changes to any SKILL.md — you may never apply one, not even
+approved ones (a human runs the apply command themselves). When you hit real
+friction (an instruction that misfired, a missing rule, an ambiguity a
+colleague had to correct), file at most ONE proposal per day, normally
+during your nightly journal:
+`python -m src.skill_proposals propose --agent <you> --skill <target-skill-dir> --old "<exact current text>" --new "<replacement>" --rationale "<one line: what went wrong without it>"`
+Quote `--old` verbatim from the file. Proposals go to sophie's daily digest;
+check outcomes with `python -m src.skill_proposals list`. A rejected
+proposal is an answer, not an insult — record the lesson in KNOWLEDGE.md.

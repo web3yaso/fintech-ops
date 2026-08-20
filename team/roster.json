@@ -9,7 +9,8 @@
         "correct_labels",
         "coach_agents",
         "approve_drafts",
-        "approve_escalations"
+        "approve_escalations",
+        "approve_skill_changes"
       ],
       "staged_as_bot": false,
       "position": "incident manager (war-room operator)"
