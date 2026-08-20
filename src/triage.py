@@ -67,7 +67,14 @@ def main(argv=None):
         counts[e["theme"]] = counts.get(e["theme"], 0) + 1
         examples.setdefault(e["theme"], e["summary"])
     merge_client = make_openai_client(model=os.environ.get("LLM_MODEL_MERGE", "gpt-4o"))
-    mapping = canonicalize(counts, merge_client, examples=examples)
+    dist_path = Path("feedback/theme_distinctions.jsonl")
+    distinctions = ([json.loads(l) for l in dist_path.read_text().splitlines() if l.strip()]
+                    if dist_path.exists() else [])
+    eq_path = Path("feedback/theme_equivalences.jsonl")
+    equivalences = ([json.loads(l) for l in eq_path.read_text().splitlines() if l.strip()]
+                    if eq_path.exists() else [])
+    mapping = canonicalize(counts, merge_client, examples=examples,
+                           distinctions=distinctions, equivalences=equivalences)
     (out / "theme_mapping.json").write_text(json.dumps(mapping, indent=2))
     enriched = apply_theme_mapping(enriched, mapping)
 

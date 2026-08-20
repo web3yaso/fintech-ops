@@ -56,6 +56,43 @@ def test_examples_are_included_in_merge_prompt():
     assert "missing since Friday" in seen[0]
 
 
+def test_distinctions_are_never_merged():
+    # ratified human knowledge ("card rail ≠ wire rail") beats the merge
+    # model's enthusiasm: if the model collapses a protected pair, both
+    # revert to identity.
+    counts = {"missing_usd_transfer": 9, "refund_missing": 1, "wire_delay": 2}
+    mapping = canonicalize(counts, client=lambda p: json.dumps({
+        "missing_usd_transfer": "missing_usd_transfer",
+        "refund_missing": "missing_usd_transfer",     # over-merge attempt
+        "wire_delay": "missing_usd_transfer",
+    }), distinctions=[{"a": "refund_missing", "b": "missing_usd_transfer"}])
+    assert mapping["refund_missing"] == "refund_missing"      # protected
+    assert mapping["wire_delay"] == "missing_usd_transfer"    # legit merge kept
+
+
+def test_distinctions_appear_in_merge_prompt():
+    seen = []
+    canonicalize({"a_theme": 1, "b_theme": 1},
+                 client=lambda p: seen.append(p) or json.dumps(
+                     {"a_theme": "a_theme", "b_theme": "b_theme"}),
+                 distinctions=[{"a": "a_theme", "b": "b_theme",
+                                "note": "ratified: distinct symptoms"}])
+    assert "distinct symptoms" in seen[0]
+
+
+def test_equivalences_force_ratified_merges():
+    # the mirror of distinctions: once a human confirms two slugs are the SAME
+    # symptom (TKT-2070's subscription failures WERE the card outage), the
+    # merge stops depending on the model's mood.
+    counts = {"cards_online_declines": 13, "subscription_payment_failure": 1}
+    mapping = canonicalize(counts, client=lambda p: json.dumps({
+        "cards_online_declines": "cards_online_declines",
+        "subscription_payment_failure": "subscription_payment_failure",  # model declines to merge
+    }), equivalences=[{"a": "subscription_payment_failure",
+                       "b": "cards_online_declines"}])
+    assert mapping["subscription_payment_failure"] == "cards_online_declines"
+
+
 def test_apply_theme_mapping_rewrites_without_mutating():
     enriched = {"T1": {"ticket_id": "T1", "theme": "payments_missing"},
                 "T2": {"ticket_id": "T2", "theme": "cards_online_declines"}}
