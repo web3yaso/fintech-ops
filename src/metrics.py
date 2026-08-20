@@ -10,6 +10,7 @@ import statistics
 from datetime import datetime
 from pathlib import Path
 
+from src.closure import closure_state, time_to_close_hours, volume_subsided
 from src.pipeline import SECURITY_FLAGS
 
 # ---------------------------------------------------------------- compute --
@@ -194,17 +195,34 @@ def _bar_chart(title, rows, value_key, fmt, tip_fmt):
     return "".join(parts)
 
 
-def _pattern_card(c, kind_label, badge_cls, icon, lag_h=None):
+def _closure_line(c, by_id, actions, events):
+    """spec §3.5: current closure state + time-to-close beside time-to-declare.
+    `closed` is earned — the theme must have gone quiet before it counts."""
+    if not actions and not events:
+        return ""
+    member_times = [by_id[t]["created_at"] for t in c["member_ids"] if t in by_id]
+    dataset_end = max(t["created_at"] for t in by_id.values())
+    subsided = volume_subsided(member_times, dataset_end)
+    state, _ = closure_state(c["cluster_id"], actions, events, subsided=subsided)
+    if state is None:
+        return ""
+    ttc = time_to_close_hours(c["cluster_id"], actions, min(member_times))
+    ttc_txt = f" · time-to-close {ttc:.0f}h" if ttc is not None else ""
+    quiet_txt = "" if subsided else " (theme still active — cannot close)"
+    return f' · closure: <strong>{state}</strong>{ttc_txt}{quiet_txt}'
+
+
+def _pattern_card(c, kind_label, badge_cls, icon, lag_h=None, closure=""):
     window = f'{str(c["first_seen"])[:16]} → {str(c["last_seen"])[:16]}'
     lag = (f' · declared on the 3rd ticket, {lag_h}h after first report'
            if lag_h is not None else '')
     return (f'<div class="card"><span class="badge {badge_cls}">{icon} {kind_label}</span> '
             f'<strong>{c["cluster_id"]}</strong> · {c["theme"]}'
             f'<div class="meta">{len(c["member_ids"])} tickets · '
-            f'{len(c["customers"])} customers · avg CSAT {c["avg_csat"]} · {window}{lag}</div></div>')
+            f'{len(c["customers"])} customers · avg CSAT {c["avg_csat"]} · {window}{lag}{closure}</div></div>')
 
 
-def generate_html(enriched, by_id, clusters, week):
+def generate_html(enriched, by_id, clusters, week, actions=(), events=()):
     sf = stuck_funds(enriched, by_id)
     exposure = risk_exposure(enriched, by_id)
     sec_open = open_security_tickets(enriched, by_id)
@@ -226,8 +244,12 @@ def generate_html(enriched, by_id, clusters, week):
         ])
 
     cards = "".join(_pattern_card(c, "INCIDENT", "inc", "&#9650;",
-                                  detection_lag_hours(c, by_id)) for c in incidents)
-    cards += "".join(_pattern_card(c, "TREND", "trd", "&#9888;") for c in trends)
+                                  detection_lag_hours(c, by_id),
+                                  _closure_line(c, by_id, list(actions), list(events)))
+                    for c in incidents)
+    cards += "".join(_pattern_card(c, "TREND", "trd", "&#9888;", None,
+                                   _closure_line(c, by_id, list(actions), list(events)))
+                     for c in trends)
 
     charts = ('<div class="charts">'
               + _bar_chart("Avg resolution by segment (hours, resolved tickets)",
@@ -300,12 +322,20 @@ def main(argv=None):
         enriched = apply_theme_mapping(enriched, json.loads(mp.read_text()))
     clusters = json.loads(Path(args.clusters).read_text())
 
+    def _jsonl(p):
+        f = Path(p)
+        return [json.loads(l) for l in f.read_text().splitlines() if l.strip()] if f.exists() else []
+    actions = _jsonl("out/actions.jsonl")
+    events = [dict(e, created_at=e.get("created_at") or e.get("ts"))
+              for e in _jsonl("out/events.jsonl")]
+
     latest = max(t["created_at"] for t in by_id.values())
     week = f"{latest.isocalendar().year}-W{latest.isocalendar().week:02d}"
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     path = out / f"ops-brief-{week}.html"
-    path.write_text(generate_html(enriched, by_id, clusters, week))
+    path.write_text(generate_html(enriched, by_id, clusters, week,
+                                  actions=actions, events=events))
     print(f"wrote {path}")
 
 

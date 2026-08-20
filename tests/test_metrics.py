@@ -96,8 +96,14 @@ def test_html_is_selfcontained_with_key_sections():
                             "theme": "fx_rate_complaints", "member_ids": ["T2"],
                             "customers": ["Beta"], "avg_csat": 1.67,
                             "first_seen": "2026-07-20 10:00", "last_seen": "2026-08-07 14:00"}]}
-    html = generate_html(enriched, by_id, clusters, week="2026-W34")
+    actions = [{"ts": "2026-08-19T11:00:00", "actor": "liaison",
+                "action": "owner_acked", "tickets": ["T1"], "artifact": "INC-001"}]
+    events = [{"event": "INCIDENT_DECLARED", "cluster_id": "INC-001",
+               "created_at": "2026-08-04 08:30:00"}]
+    html = generate_html(enriched, by_id, clusters, week="2026-W34",
+                         actions=actions, events=events)
     for needle in ["INC-001", "TRD-001", "Stuck inbound funds", "MRR exposed",
-                   "prefers-color-scheme", "table", "2026-W34"]:
+                   "prefers-color-scheme", "table", "2026-W34",
+                   "owner_acked"]:                       # closure state on the card
         assert needle in html, needle
     assert "http://" not in html and "https://" not in html  # self-contained
