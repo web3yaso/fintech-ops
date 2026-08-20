@@ -15,18 +15,17 @@ AGENT_PROMPT = (
     "Post your pinned introduction for this ops room (do NOT run any commands "
     "or tools — answer from your skill instructions only). 6-8 short lines, "
     "plain language:\n"
-    "1) 岗位 — your role in one line\n"
-    "2) 主要做什么 — the 2-3 things you actually do, naming the files you "
+    "1) Role — your role in one line\n"
+    "2) What I do — the 2-3 things you actually do, naming the files you "
     "read and write\n"
-    "3) 如何合作 — what to say to trigger me, what I hand off and to whom, "
+    "3) How to work with me — what to say to trigger me, what I hand off and to whom, "
     "and what I will never do\n"
-    "Answer in English with the three Chinese headers above kept as section "
-    "labels."
+    "Use those three section labels verbatim."
 )
 PERSONA_PROMPT = (
     "Post your pinned introduction for this ops room (no commands, stay in "
-    "character, 5-6 short lines): 岗位 — who you are, team, that you're a "
-    "simulated colleague; 主要做什么 — what you own; 如何合作 — when "
+    "character, 5-6 short lines): Role — who you are, team, that you're a "
+    "simulated colleague; What I own — your responsibilities; How to work with me — when "
     "teammates should @ you and what you'll do when they do."
 )
 

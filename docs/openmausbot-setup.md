@@ -96,7 +96,7 @@ otherwise shows the app's generic onboarding):
 .venv/bin/python scripts/intro_bots.py     # idempotent; ~30-60s per member
 ```
 
-Each member posts a pinned-style intro — 岗位 / 主要做什么 / 如何合作 —
+Each member posts a pinned-style intro — Role / What I do / How to work with me —
 generated from its own SKILL.md or persona. This doubles as the end-to-end
 smoke test: if an intro comes back, that bot's CLI, skills, and cwd all work.
 (Run 2026-08-19: 7/7 ok.)

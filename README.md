@@ -125,10 +125,10 @@ classification + clustering; draft quality is assessed by humans.
 
 ## Reproduce (two paths)
 
-**Path A — no API key (deterministic core, 49 tests):**
+**Path A — no API key (deterministic core, 71 tests):**
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt fastapi httpx uvicorn
-.venv/bin/python -m pytest          # 49 passed
+.venv/bin/python -m pytest          # 71 passed
 open reports/ops-brief-2026-W33.html
 ```
 
@@ -145,13 +145,13 @@ open reports/ops-brief-2026-W33.html
 ## Repo tour
 
 `src/` pipeline (enrichment, two detectors, scoring, theme canonicalization,
-watch mode, mock helpdesk + adapters) · `tests/` 55 tests, memberships
+watch mode, mock helpdesk + adapters) · `tests/` 71 tests, memberships
 hand-verified against the CSV (`tests/README.md` is the case inventory) ·
 `.claude/skills/` the four agents · `team/roster.json` the humans across teams,
 their coaching roles, and the incident-manager identity · `playbooks/` wire
 investigation (shipped) + 2 stubs · `scripts/` war-room tooling
 (`seed_openmausbot.py` seeds bots+room via the app's local API ·
-`intro_bots.py` generates every member's 岗位/职责/协作 landing page ·
+`intro_bots.py` generates every member's role/duties/collaboration landing page ·
 `reset_demo.sh` tiered state reset that never touches the enrichment cache or
 corrections) · `incidents/ trends/ workpackages/ knowledge/` the agents'
 actual output on this dataset — including the eng bug report filed as

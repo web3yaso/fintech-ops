@@ -1,19 +1,20 @@
 #!/bin/bash
 # Reset processing records to a chosen depth. Run from fintech-ops/.
 #
-#   scripts/reset_demo.sh logs        # ① 只清运行日志：actions/events/queue/clusters
-#   scripts/reset_demo.sh artifacts   # ② ① + agent 工件（卡/包/简报）——重录完整流程用
-#   scripts/reset_demo.sh room        # ③ 清空 war room 聊天（删群重建，bot 不动）
-#   scripts/reset_demo.sh all         # ①+②+③
+#   scripts/reset_demo.sh logs        # (1) run logs only: actions/events/queue/clusters
+#   scripts/reset_demo.sh artifacts   # (2) = (1) + agent artifacts (cards/packages/briefs) — for re-recording a full run
+#   scripts/reset_demo.sh room        # (3) clear war-room chat (delete + recreate the room; bots untouched)
+#   scripts/reset_demo.sh all         # (1)+(2)+(3)
 #
-# 永不自动删除（要删请手动，想清楚）：
-#   out/enriched.jsonl / out/theme_mapping.json  — enrichment 缓存（重跑要花 API 钱，
-#                                                  且缓存保证演示确定性）
-#   feedback/corrections.jsonl                   — 纠错记录（eval before/after 的依据）
-#   eval/*                                       — golden 与两份报告
+# NEVER deleted automatically (remove by hand only, deliberately):
+#   out/enriched.jsonl / out/theme_mapping.json  — enrichment cache (re-running costs API money,
+#                                                  and the cache keeps demos deterministic)
+#   feedback/corrections.jsonl                   — corrections (the basis of the before/after eval)
+#   eval/*                                       — golden set and both reports
 set -euo pipefail
 cd "$(dirname "$0")/.."
-MODE="${1:-logs}"
+MODE="${1:-}"
+[[ -n "$MODE" ]] || { echo "usage: $0 [logs|artifacts|room|all] — no default: deleting requires an explicit choice"; exit 1; }
 
 clear_logs() {
   rm -f out/actions.jsonl out/events.jsonl out/ops_queue.json out/clusters.json out/watch_run.log
