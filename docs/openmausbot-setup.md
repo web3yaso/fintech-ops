@@ -59,8 +59,10 @@ learn-on-correction, always on, same turn as the correction. Loop 3:
 weekly-digest routines Sunday 18:00 (transcripts + corrections + actions +
 `git log`). All 8 routines are created idempotently by the seed script —
 see them under the app's Routines UI; runs only fire while the app is open.
-The repo is a git repository, so self-taught knowledge carries the same
-audit story as human coaching.
+**Agents commit their own KNOWLEDGE.md changes** (path-scoped, agent-named
+author, no push): `git log --author=<agent>` is that agent's learning
+history; `git revert` undoes a bad lesson. Human coaching and agent
+self-learning share one audit story.
 
 Ops handles (sophie, marcus) are voiced by you, the operator.
 

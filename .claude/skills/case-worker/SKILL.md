@@ -85,3 +85,7 @@ repo docs that changed (`git log --since="7 days ago" --stat`). Compress
 what's durable into "Weekly digests" (one dated block), prune stale entries
 elsewhere, then log `knowledge_added`. This is also what you draw on for the
 standup share-out: one incident handled + one thing learned.
+
+**Committing your knowledge (all loops):** after ANY change to your KNOWLEDGE.md, commit it yourself, in the same turn:
+`git -c user.name="<your-skill-name>" -c user.email="<your-skill-name>@fintech-ops.local" commit -m "knowledge(<your-skill-name>): <journal|digest|lesson> <date>" -- .claude/skills/<your-dir>/KNOWLEDGE.md`
+Path-scoped commit ONLY — never `git add -A`, never touch other files' changes, never push. The agent-attributed author line is the audit trail: humans review with `git log --author=<you>` and revert what's wrong.
