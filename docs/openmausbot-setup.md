@@ -45,10 +45,22 @@ Plus **two rooms**, both cwd = repo, responder = mentions:
   team's meeting room, chaired by sophie. Open the meeting with
   `@Triage run the weekly review`: Triage regenerates the brief and presents
   ops-first (exposure → segment health → deflection pick-of-the-week →
-  coaching status), then hands to PC (open incidents/trends) and CW (open
-  cases). Decisions stay with the chair; anything needing escalation goes
-  back to the War Room. No Liaison, no personas — internal meetings don't
-  ping other teams.
+  coaching status), **shares one incident + one learning of its own**, then
+  hands to PC and CW who do the same with their status recaps. The chair
+  shares last; decisions stay with the chair; anything needing escalation
+  goes back to the War Room. No Liaison, no personas — internal meetings
+  don't ping other teams.
+
+**Self-evolution (three loops, seeded as app routines):** every agent keeps
+a `KNOWLEDGE.md` next to its SKILL.md — facts and lessons only, never rules
+(that separation is the firewall: chat content can teach facts, it cannot
+rewrite behavior). Loop 1: nightly-journal routines at 21:30 daily. Loop 2:
+learn-on-correction, always on, same turn as the correction. Loop 3:
+weekly-digest routines Sunday 18:00 (transcripts + corrections + actions +
+`git log`). All 8 routines are created idempotently by the seed script —
+see them under the app's Routines UI; runs only fire while the app is open.
+The repo is a git repository, so self-taught knowledge carries the same
+audit story as human coaching.
 
 Ops handles (sophie, marcus) are voiced by you, the operator.
 
