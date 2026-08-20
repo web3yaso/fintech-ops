@@ -30,10 +30,11 @@ drift from spec §6.
 | `test_metrics.py` | 7 | stuck funds dedupes follow-ups, skips resolved; risk exposure = distinct customers with open security flags; segment health; deflection ranked with hours saved; oldest open investigation age; detection lag = 1st→3rd ticket; HTML self-contained with key sections (§4) |
 | `test_eval_clusters.py` | 2 | cluster-membership hit rate: perfect detection = full score; split clusters, missed trends, and false inclusion of `cluster: null` tickets all count as misses (§6) |
 | `test_action_log.py` | 3 | audit trail: complete validated records; per-ticket history in order; malformed actor/action/ticket rejected before write (§3) |
+| `test_skill_proposals.py` | 4 | Channel 4: propose validates verbatim target text; apply demands approve_skill_changes and edits the file; drifted targets refused; reject records reason (§5) |
 | `day2/test_replay_and_writeback.py` | 4 | history/stream split 56/44; deterministic replay; write-back round trip on TKT-2072; mock Jira keys OPS-101… (§2) |
 | `day2/test_watch_events.py` | 4 | INCIDENT_DECLARED triggered by TKT-2060, strictly after its arrival; seeded history is silent but counts toward clusters; RISK_PINNED for TKT-2079; cache never re-enriches a seen id (§4) |
 
-**Total: 58 tests, all green as of 2026-08-19.**
+**Total: 62 tests, all green as of 2026-08-19.**
 
 ## Protocol
 
