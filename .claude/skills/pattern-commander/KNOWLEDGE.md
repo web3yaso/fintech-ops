@@ -7,6 +7,9 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
+- 2026-08-20: no new actions.jsonl entries, corrections, or Ops War
+  Room / Ops Standup messages since the 08-19 21:31 journal — quiet day,
+  no update needed to INC-001/INC-002/TRD-001 or the domain facts below.
 - 2026-08-19: both clusters verified today needed one member dropped for
   wrong symptom (INC-002 dropped TKT-2092 — card refund not credited, not a
   missing wire; TRD-001 dropped TKT-2095 — FX availability/hours question,
