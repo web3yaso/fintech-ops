@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ops Control Tower — Loop Take-Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   THEME — Ops Console design system
+   The deck looks like the tool: console chrome,
+   audit-trail strips, state chips, mono data.
+   =========================================== */
+:root {
+    --stage-bg: #08090b;
+    --slide-bg: #101315;
+    --panel: #181C1F;
+    --panel-deep: #0B0D0F;
+    --line: #262B2F;
+    --ink: #E8EDF2;
+    --ink-2: #aab6c2;
+    --ink-3: #8b98a5;
+    --ink-4: #5d6a76;
+    --blue: #3987E5;
+    --green: #3DDC97;
+    --red: #e66767;
+    --amber: #ecb35a;
+    --font-display: 'Bricolage Grotesque', 'Avenir Next', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SFMono-Regular', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff); }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+@media print {
+    html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+    .deck-viewport { position: static; overflow: visible; background: #fff; }
+    .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+    .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+    .slide:last-child { break-after: auto; page-break-after: auto; }
+    .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+/* ===========================================
+   REVEAL ANIMATION — staggered on slide entry
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1), .r1 { transition-delay: .08s; }
+.reveal:nth-child(2), .r2 { transition-delay: .18s; }
+.reveal:nth-child(3), .r3 { transition-delay: .28s; }
+.reveal:nth-child(4), .r4 { transition-delay: .38s; }
+.reveal:nth-child(5), .r5 { transition-delay: .48s; }
+.reveal:nth-child(6), .r6 { transition-delay: .58s; }
+
+/* ===========================================
+   CONSOLE CHROME — shared slide components
+   =========================================== */
+.slide { color: var(--ink); font-family: var(--font-display); }
+.topbar {
+    position: absolute; top: 0; left: 0; right: 0; height: 60px;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 22px; padding: 0 48px;
+    font: 400 19px var(--font-mono); color: var(--ink-4);
+}
+.dot { width: 13px; height: 13px; border-radius: 50%; flex: none; }
+.dot.r { background: var(--red); } .dot.a { background: var(--amber); } .dot.g { background: var(--green); }
+.topbar .path { color: var(--ink-3); }
+.pageno { margin-left: auto; }
+.kicker {
+    font: 600 22px var(--font-mono); letter-spacing: .22em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 22px;
+}
+.kicker .qtag { color: var(--ink-4); }
+h2.sl-title { font: 800 72px/1.06 var(--font-display); letter-spacing: -.02em; }
+h2.sl-title em { font-style: normal; color: var(--blue); }
+.wrap { position: absolute; inset: 60px 0 0 0; padding: 64px 110px 56px; }
+
+/* chips (closure states, tags) */
+.chip { display: inline-flex; align-items: center; padding: 8px 18px; border-radius: 99px;
+    border: 1px solid var(--line); color: var(--ink-3); font: 600 19px var(--font-mono); white-space: nowrap; }
+.chip.on  { background: var(--blue); border-color: var(--blue); color: #fff; }
+.chip.ok  { background: transparent; border-color: var(--green); color: var(--green); }
+.chip.warn{ border-color: var(--red); color: var(--red); }
+.arrow { color: var(--ink-4); font: 600 20px var(--font-mono); }
+
+/* console cards */
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px 30px; }
+.card .c-kick { font: 600 17px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 10px; }
+.card .c-kick.red { color: var(--red); } .card .c-kick.blue { color: var(--blue); }
+.card .c-kick.amber { color: var(--amber); } .card .c-kick.green { color: var(--green); }
+.card h3 { font: 600 30px/1.2 var(--font-display); margin-bottom: 8px; }
+.card p { font: 500 22px/1.45 var(--font-display); color: var(--ink-2); }
+.card .mono { font: 400 19px/1.6 var(--font-mono); color: var(--ink-3); }
+
+/* audit trail strip (bottom of some slides) */
+.trail { position: absolute; left: 0; right: 0; bottom: 0; min-height: 96px;
+    background: var(--panel-deep); border-top: 1px solid var(--line);
+    padding: 22px 110px; font: 400 20px/1.8 var(--font-mono); color: var(--ink-4); }
+.trail b { color: var(--green); font-weight: 600; } .trail .who { color: var(--ink-2); }
+
+/* stat tiles */
+.tiles { display: flex; gap: 26px; }
+.tile { flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px 28px; }
+.tile .v { font: 800 52px var(--font-display); letter-spacing: -.02em; }
+.tile .v.blue { color: var(--blue); } .tile .v.green { color: var(--green); } .tile .v.red { color: var(--red); }
+.tile .l { font: 500 19px var(--font-mono); color: var(--ink-4); margin-top: 6px; }
+
+/* two-column helper */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+/* ===========================================
+   SLIDE 1 — COVER
+   =========================================== */
+.s1 h1 { position: absolute; left: 110px; top: 240px; font: 800 132px/1.0 var(--font-display); letter-spacing: -.03em; }
+.s1 h1 .blue { color: var(--blue); }
+.s1 .sub { position: absolute; left: 112px; top: 545px; width: 1100px; font: 500 38px/1.5 var(--font-display); color: var(--ink-2); }
+.s1 .states { position: absolute; left: 112px; top: 720px; display: flex; gap: 13px; align-items: center; flex-wrap: nowrap; }
+.s1 .meta { position: absolute; right: 48px; top: 120px; font: 400 20px/1.7 var(--font-mono); color: var(--ink-4); text-align: right; }
+
+/* ===========================================
+   SLIDE 2 — PROBLEM
+   =========================================== */
+.s2 .lead { font: 500 33px/1.5 var(--font-display); color: var(--ink-2); width: 1560px; margin-top: 18px; }
+.s2 .lead b { color: var(--ink); font-weight: 600; }
+.s2 .patterns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 42px; }
+.s2 .thesis { margin-top: 44px; font: 600 40px/1.3 var(--font-display); }
+.s2 .thesis em { font-style: normal; color: var(--blue); }
+
+/* ===========================================
+   SLIDE 3 — WHY (transposed org)
+   =========================================== */
+.s3 .contrast { margin-top: 36px; }
+.s3 .old, .s3 .new { border-radius: 14px; padding: 30px 34px; min-height: 330px; }
+.s3 .old { background: var(--panel-deep); border: 1px solid var(--line); }
+.s3 .new { background: var(--panel); border: 1px solid var(--blue); }
+.s3 .rowlab { font: 600 18px var(--font-mono); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 18px; }
+.s3 .old .rowlab { color: var(--ink-4); } .s3 .new .rowlab { color: var(--blue); }
+.s3 ul { list-style: none; }
+.s3 li { font: 500 27px/1.45 var(--font-display); color: var(--ink-2); padding: 10px 0; border-bottom: 1px solid var(--line); }
+.s3 li:last-child { border-bottom: 0; }
+.s3 .new li { color: var(--ink); }
+.s3 .whyops { margin-top: 36px; display: flex; gap: 22px; align-items: center; }
+.s3 .whyops .lab { font: 600 20px var(--font-mono); letter-spacing: .14em; color: var(--ink-4); text-transform: uppercase; }
+
+/* ===========================================
+   SLIDE 4 — HOW: system
+   =========================================== */
+.s4 .flow { display: grid; grid-template-columns: 1fr 44px 1.15fr 44px 1.3fr 44px 1.15fr; align-items: stretch; gap: 0; margin-top: 40px; }
+.s4 .stagebox { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; display: flex; flex-direction: column; }
+.s4 .stagebox.hot { border-color: var(--blue); }
+.s4 .fa { display: grid; place-items: center; color: var(--ink-4); font: 600 26px var(--font-mono); }
+.s4 .stagebox h3 { font: 600 27px var(--font-display); margin-bottom: 10px; }
+.s4 .stagebox .mono { font: 400 18.5px/1.65 var(--font-mono); color: var(--ink-3); }
+.s4 .stagebox .mono b { color: var(--ink-2); font-weight: 600; }
+.s4 .gates { margin-top: 34px; display: flex; gap: 14px; align-items: center; }
+.s4 .gates .lab { font: 600 20px var(--font-mono); letter-spacing: .14em; color: var(--ink-4); text-transform: uppercase; margin-right: 8px; }
+
+/* ===========================================
+   SLIDE 5 — HOW: live catch + closure
+   =========================================== */
+.s5 .cols { margin-top: 36px; grid-template-columns: 1.05fr 1fr; }
+.s5 .timeline { list-style: none; }
+.s5 .timeline li { display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.s5 .timeline li:last-child { border-bottom: 0; }
+.s5 .t { flex: none; width: 205px; font: 600 20px var(--font-mono); color: var(--blue); }
+.s5 .e { font: 500 24px/1.4 var(--font-display); color: var(--ink-2); }
+.s5 .e b { color: var(--ink); }
+.s5 .statecol .group { margin-bottom: 26px; }
+.s5 .statecol .glab { font: 600 19px var(--font-mono); color: var(--ink-4); margin-bottom: 12px; }
+.s5 .staterow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.s5 .found { margin-top: 30px; font: 600 34px/1.3 var(--font-display); }
+.s5 .found em { font-style: normal; color: var(--green); }
+
+/* ===========================================
+   SLIDE 6 — HOW: learning + measured
+   =========================================== */
+.s6 .channels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 34px; }
+.s6 .measure { margin-top: 34px; }
+
+/* ===========================================
+   SLIDE 7 — ASSUMPTIONS (team design)
+   =========================================== */
+.s7 .rowlab { font: 600 20px var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-4); margin: 32px 0 16px; }
+.s7 .roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.s7 .roles.h3 { grid-template-columns: repeat(3, 1fr); }
+.s7 .seams { margin-top: 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.s7 .assump { margin-top: 30px; font: 400 21px/1.7 var(--font-mono); color: var(--ink-3); }
+
+/* ===========================================
+   SLIDE 8 — ROADMAP + CLOSE
+   =========================================== */
+.s8 .roadmap { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 36px; }
+.s8 .closing { margin-top: 46px; font: 800 56px/1.15 var(--font-display); letter-spacing: -.02em; }
+.s8 .closing em { font-style: normal; color: var(--blue); }
+.s8 .try { margin-top: 34px; font: 400 21px/1.9 var(--font-mono); color: var(--ink-3); }
+.s8 .try b { color: var(--green); font-weight: 600; }
+
+/* ===========================================
+   DECK CHROME (outside stage) + EDIT MODE
+   =========================================== */
+.deck-controls { font: 600 15px var(--font-mono); color: #5d6a76; background: #101315cc; border: 1px solid #262B2F; border-radius: 99px; padding: 7px 16px; }
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; }
+.edit-toggle { position: fixed; top: 16px; left: 16px; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity .3s ease; background: var(--panel); color: var(--ink-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font: 600 15px var(--font-mono); cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { border-color: var(--green); color: var(--green); }
+body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-offset: 3px; cursor: text; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+<!-- ============ SLIDE 1 · COVER ============ -->
+<section class="slide s1 active">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">ops-control-tower — live · 100 tickets · 2 incidents · 1 trend</span>
+        <span class="pageno">01 / 08</span></div>
+    <div class="s1 meta reveal" style="position:absolute;right:48px;top:120px;font:400 20px/1.7 var(--font-mono);color:var(--ink-4);text-align:right" data-edit>Loop take-home<br>Sophie Huang · 2026-08</div>
+    <h1 class="reveal r1" data-edit>Ops Control <span class="blue">Tower</span></h1>
+    <div class="sub reveal r2" data-edit>One loop owner + an AI execution layer.<br>Real agent leverage is structural, not conversational.</div>
+    <div class="states reveal r3">
+        <span class="chip on">detected</span><span class="arrow">→</span>
+        <span class="chip on">escalated</span><span class="arrow">→</span>
+        <span class="chip">owner_acked</span><span class="arrow">→</span>
+        <span class="chip">fix_confirmed</span><span class="arrow">→</span>
+        <span class="chip">customers_notified</span><span class="arrow">→</span>
+        <span class="chip warn">closed — earned, not declared</span>
+    </div>
+    <div class="trail reveal r4"><span class="who">21:30 triage</span> journal_written · <span class="who">09:12 pattern-commander</span> incident_card INC-001 <b>14/14</b> · <span class="who">09:40 sophie</span> @Liaison go ahead · <span class="who">09:41 liaison</span> tracker_issue OPS-101 → <b>@Alex acked</b></div>
+</section>
+
+<!-- ============ SLIDE 2 · Q1 PROBLEM ============ -->
+<section class="slide s2">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q1 — problem</span><span class="pageno">02 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q1 ·</span> WHAT PROBLEM</div>
+        <h2 class="sl-title reveal r1" data-edit>Ops runs the old way:<br>one ticket at a time.</h2>
+        <p class="lead reveal r2" data-edit>Ops integrates more information than any other role — yet it still works in specialist columns and handoffs. In the dataset, <b>38 of 100 tickets aren't support work at all</b>; they're cross-ticket problems wearing ticket costumes, and nothing reclaims them:</p>
+        <div class="patterns">
+            <div class="card reveal r3"><div class="c-kick red">▲ Burst incident</div><h3 data-edit>Card outage, 4 days</h3><p data-edit>14 tickets under 14 different subject lines — never declared as one incident.</p></div>
+            <div class="card reveal r4"><div class="c-kick red">▲ Burst incident</div><h3 data-edit>$342k wires stuck</h3><p data-edit>9 tickets, 8 customers; payroll and suppliers blocked; 5 of 9 unresolved.</p></div>
+            <div class="card reveal r5"><div class="c-kick amber">⚠ Slow-burn trend</div><h3 data-edit>FX churn signal</h3><p data-edit>10 customers over 3 weeks, CSAT 1.67 — invisible to any daily review.</p></div>
+            <div class="card reveal r6"><div class="c-kick blue">◆ Hidden risk</div><h3 data-edit>"Quick question"</h3><p data-edit>An unrecognized admin — a likely account takeover, still open.</p></div>
+        </div>
+        <div class="thesis reveal r6" data-edit>Ops doesn't need a faster version of the old way — <em>it needs an AI-native one.</em></div>
+    </div>
+</section>
+
+<!-- ============ SLIDE 3 · Q2 WHY ============ -->
+<section class="slide s3">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q2 — why</span><span class="pageno">03 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q2 ·</span> WHY THIS</div>
+        <h2 class="sl-title reveal r1" data-edit>A working sample of the <em>transposed organization</em>.</h2>
+        <div class="cols contrast">
+            <div class="old reveal r2">
+                <div class="rowlab" data-edit>The old shape</div>
+                <ul>
+                    <li data-edit>Specialists own columns; work moves by handoff</li>
+                    <li data-edit>People produce artifacts — replies, reports, escalation emails</li>
+                    <li data-edit>Context dies at every department boundary</li>
+                </ul>
+            </div>
+            <div class="new reveal r3">
+                <div class="rowlab" data-edit>The transposed shape (blog.sshh.io)</div>
+                <ul>
+                    <li data-edit>One generalist becomes a <b>loop owner</b> — decisions, not artifacts</li>
+                    <li data-edit>Agents execute the chain: detect → investigate → hand off → close</li>
+                    <li data-edit>Handoffs are file contracts — context survives every stage</li>
+                </ul>
+            </div>
+        </div>
+        <div class="whyops reveal r4">
+            <span class="lab" data-edit>Why start in ops:</span>
+            <span class="chip" data-edit>highest task volume</span>
+            <span class="chip" data-edit>densest information surface</span>
+            <span class="chip" data-edit>costliest failure modes (FINTRAC fintech)</span>
+            <span class="chip ok" data-edit>every ticket = a training signal</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SLIDE 4 · Q3 HOW: SYSTEM ============ -->
+<section class="slide s4">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q3 — how · the system</span><span class="pageno">04 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — ONE SHARED TEAM OF AGENTS</div>
+        <h2 class="sl-title reveal r1" data-edit>The team shares agents —<br>nobody prompts alone.</h2>
+        <div class="flow reveal r2">
+            <div class="stagebox"><h3 data-edit>Helpdesk seam</h3><div class="mono" data-edit>mock API replays the queue as a <b>real-time stream</b>; labels written back. CSV fallback.</div></div>
+            <div class="fa">→</div>
+            <div class="stagebox"><h3 data-edit>Deterministic pipeline</h3><div class="mono" data-edit>LLM enrichment → validated schema<br><b>burst + trend detectors</b> + precedence<br>explainable score — formula shown</div></div>
+            <div class="fa">→</div>
+            <div class="stagebox hot"><h3 data-edit>War room (OpenMausBot, MIT)</h3><div class="mono" data-edit><b>Triage · Pattern Commander · Case Worker · Liaison</b> + simulated colleagues from eng/product/compliance. One workspace = maximal shared context. The incident manager holds every gate.</div></div>
+            <div class="fa">→</div>
+            <div class="stagebox"><h3 data-edit>Outputs that travel</h3><div class="mono" data-edit>incident cards · work packages<br>briefs → eng/product · <b>OPS-xxx</b> filed<br>weekly brief + console snapshot</div></div>
+        </div>
+        <div class="gates reveal r4">
+            <span class="lab" data-edit>Human gates:</span>
+            <span class="chip" data-edit>escalation — @Liaison go ahead</span>
+            <span class="chip" data-edit>customer drafts — draft_approved</span>
+            <span class="chip" data-edit>skill changes — approve SCP-xxx</span>
+        </div>
+    </div>
+    <div class="trail reveal r5"><span class="who">audit</span> every action → out/actions.jsonl · <b>--history TKT-2072</b> answers "what happened to this ticket?" in one command</div>
+</section>
+
+<!-- ============ SLIDE 5 · Q3 HOW: LIVE CATCH + CLOSURE ============ -->
+<section class="slide s5">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q3 — how · caught live, tracked to closed</span><span class="pageno">05 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — DETECTION IS LIVE, CLOSURE IS EARNED</div>
+        <h2 class="sl-title reveal r1" data-edit>Caught on the <em>third ticket</em> — then tracked to closed.</h2>
+        <div class="cols">
+            <div class="reveal r2">
+                <ul class="timeline">
+                    <li><span class="t">Aug 4 · 08:30</span><span class="e" data-edit>first decline report lands (TKT-2059)</span></li>
+                    <li><span class="t">Aug 4 · 15:43</span><span class="e" data-edit><b>INC-001 declared on the 3rd ticket — 7h13m in.</b> The real team worked these as separate cases for 3 days</span></li>
+                    <li><span class="t">Aug 3 · 12:00</span><span class="e" data-edit>TRD-001 fires the moment the FX theme crosses the 14-day span — a pattern no daily review can see</span></li>
+                    <li><span class="t">Aug 10 · 11:00</span><span class="e" data-edit>"Quick question" arrives → <b>RISK_PINNED instantly</b> (possible account takeover)</span></li>
+                </ul>
+            </div>
+            <div class="statecol reveal r3">
+                <div class="group">
+                    <div class="glab" data-edit>INC-001 · card declines — walked to notified</div>
+                    <div class="staterow">
+                        <span class="chip on">detected</span><span class="chip on">escalated</span><span class="chip on">owner_acked</span><span class="chip on">fix_confirmed</span><span class="chip ok">customers_notified · 410h</span>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="glab" data-edit>INC-002 · stuck wires — refuses to close</div>
+                    <div class="staterow">
+                        <span class="chip on">detected</span><span class="chip on">escalated</span><span class="chip warn">cannot close — theme still active</span>
+                    </div>
+                </div>
+                <div class="found reveal r4" data-edit>Found is not fixed — the brief reports <em>time-to-close beside time-to-declare.</em></div>
+            </div>
+        </div>
+    </div>
+    <div class="trail reveal r5"><span class="who">discipline</span> "closed" requires theme volume back to baseline — state tracking, not fix verification · the send button is never the AI's</div>
+</section>
+
+<!-- ============ SLIDE 6 · Q3 HOW: LEARNING ============ -->
+<section class="slide s6">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q3 — how · four learning channels</span><span class="pageno">06 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — THE TEAM LEARNS, WITH AUTHORITY CHECKED</div>
+        <h2 class="sl-title reveal r1" data-edit>Four channels. <em>Each with the right authority.</em></h2>
+        <div class="channels">
+            <div class="card reveal r2"><div class="c-kick blue">1 · corrections</div><p data-edit>Ops-role-gated, enforced in code. One correction = override + few-shot + eval case.</p></div>
+            <div class="card reveal r3"><div class="c-kick blue">2 · coaching</div><p data-edit>"From now on…" → one rule in NOTES.md. Capped at 20, git-audited, human-pruned.</p></div>
+            <div class="card reveal r4"><div class="c-kick green">3 · self-learning</div><p data-edit>Nightly journals + weekly digests into KNOWLEDGE.md — facts only, never rules. Agents commit under their own git author.</p></div>
+            <div class="card reveal r5"><div class="c-kick amber">4 · skill evolution</div><p data-edit>Agents propose frozen diffs; sophie approves in chat; the executor can apply only the recorded diff — humans-only by construction.</p></div>
+        </div>
+        <div class="tiles measure reveal r6">
+            <div class="tile"><div class="v blue">75 → 96%</div><div class="l" data-edit>segment accuracy · 2 corrections · leave-one-out</div></div>
+            <div class="tile"><div class="v red">88 → 83%</div><div class="l" data-edit>same run caught a coaching side effect</div></div>
+            <div class="tile"><div class="v green">14/14 · 9/9 · 11/11</div><div class="l" data-edit>detection, zero false positives</div></div>
+            <div class="tile"><div class="v">71</div><div class="l" data-edit>tests green · 24-ticket golden eval</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SLIDE 7 · Q4 ASSUMPTIONS ============ -->
+<section class="slide s7">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q4 — assumptions · team design</span><span class="pageno">07 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q4 ·</span> KEY ASSUMPTIONS</div>
+        <h2 class="sl-title reveal r1" data-edit>The core assumption is a <em>team design</em>.</h2>
+        <div class="rowlab reveal r2" data-edit>4 agent roles — execution</div>
+        <div class="roles reveal r2">
+            <div class="card"><h3 data-edit>Triage</h3><p data-edit>queue, routing, corrections</p></div>
+            <div class="card"><h3 data-edit>Pattern Commander</h3><p data-edit>incident & trend cards</p></div>
+            <div class="card"><h3 data-edit>Case Worker</h3><p data-edit>playbook work packages</p></div>
+            <div class="card"><h3 data-edit>Liaison</h3><p data-edit>cross-team briefs, tracker</p></div>
+        </div>
+        <div class="rowlab reveal r3" data-edit>3 human roles — judgment (one operator wears all three hats in this demo)</div>
+        <div class="roles h3 reveal r3">
+            <div class="card"><h3 data-edit>Loop owner</h3><p data-edit>runs the queue, makes the calls</p></div>
+            <div class="card"><h3 data-edit>Platform specialist</h3><p data-edit>encodes expertise into playbooks & skills</p></div>
+            <div class="card"><h3 data-edit>Loop manager</h3><p data-edit>reviews corrections, approves outbound</p></div>
+        </div>
+        <div class="seams reveal r4">
+            <span class="rowlab" style="margin:0" data-edit>The seams where they split at scale:</span>
+            <span class="chip">correct_labels</span><span class="chip">approve_drafts</span><span class="chip">approve_escalations</span><span class="chip">approve_skill_changes</span>
+        </div>
+        <div class="assump reveal r5" data-edit>Also assumed: ticket text is the only system of record · monthly revenue proxies impact · synthetic data → no privacy concern in LLM calls</div>
+    </div>
+</section>
+
+<!-- ============ SLIDE 8 · Q5 ROADMAP + CLOSE ============ -->
+<section class="slide s8">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q5 — with more time</span><span class="pageno">08 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q5 ·</span> WITH MORE TIME</div>
+        <div class="roadmap">
+            <div class="card reveal r1"><div class="c-kick blue">dashboard</div><p data-edit>The console snapshot becomes a continuously-updated hosted view: throughput, accuracy, backlog, live.</p></div>
+            <div class="card reveal r2"><div class="c-kick blue">skill optimization</div><p data-edit>Systematic, driven by eval + correction history — the proposal channel already collects the raw material.</p></div>
+            <div class="card reveal r3"><div class="c-kick blue">outbound replies</div><p data-edit>Agents draft customer replies inside the helpdesk — gated by human approval before anything leaves the building.</p></div>
+            <div class="card reveal r4"><div class="c-kick blue">production adapter</div><p data-edit>The two-method seam exists; what remains is OAuth, webhooks, rate limits, idempotent write-backs.</p></div>
+        </div>
+        <div class="closing reveal r5" data-edit>Real agent leverage is <em>structural,<br>not conversational.</em></div>
+        <div class="try reveal r6" data-edit><b>Try it in 2 seconds</b> — reports/console-snapshot.pdf renders on GitHub · the HTML original opens locally · <b>30 minutes</b> — scripts/setup_demo.sh recreates the live war room (verified install, no sudo, offline by default)</div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<div class="deck-controls" id="deckControls">1 / 8</div>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️ edit</button>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard (arrows/space/pgup/pgdn/home/end),
+   wheel, and touch/swipe navigation.
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.current = 0;
+        this.stage = document.getElementById('deckStage');
+        this.controls = document.getElementById('deckControls');
+        this.setupScale();
+        this.setupKeys();
+        this.setupTouch();
+        this.setupWheel();
+        this.show(0);
+    }
+    setupScale() {
+        const scale = () => {
+            const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+            const x = (innerWidth - 1920 * f) / 2, y = (innerHeight - 1080 * f) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+        };
+        scale(); addEventListener('resize', scale);
+    }
+    setupKeys() {
+        addEventListener('keydown', e => {
+            if (document.body.classList.contains('editing')) return;
+            if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) this.show(this.current + 1);
+            else if (['ArrowLeft', 'PageUp'].includes(e.key)) this.show(this.current - 1);
+            else if (e.key === 'Home') this.show(0);
+            else if (e.key === 'End') this.show(this.slides.length - 1);
+        });
+    }
+    setupTouch() {
+        let x0 = null;
+        addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+        addEventListener('touchend', e => {
+            if (x0 === null) return;
+            const dx = e.changedTouches[0].clientX - x0;
+            if (Math.abs(dx) > 60) this.show(this.current + (dx < 0 ? 1 : -1));
+            x0 = null;
+        }, { passive: true });
+    }
+    setupWheel() {
+        let lock = 0;
+        addEventListener('wheel', e => {
+            const now = Date.now();
+            if (now - lock < 650 || Math.abs(e.deltaY) < 24) return;
+            lock = now; this.show(this.current + (e.deltaY > 0 ? 1 : -1));
+        }, { passive: true });
+    }
+    show(i) {
+        this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+        this.slides.forEach((s, k) => {
+            s.classList.toggle('active', k === this.current);
+            s.classList.toggle('visible', k === this.current);
+        });
+        this.controls.textContent = `${this.current + 1} / ${this.slides.length}`;
+    }
+}
+const deck = new SlidePresentation();
+
+/* ===========================================
+   INLINE EDITING — hover top-left corner or
+   press E; click text to edit; Ctrl/Cmd+S saves
+   to localStorage; changes restore on reload.
+   =========================================== */
+const editor = {
+    isActive: false,
+    key: 'ops-control-tower-deck-edits',
+    toggle() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('editing', this.isActive);
+        editToggle.classList.toggle('active', this.isActive);
+        editToggle.textContent = this.isActive ? '✓ done' : '✏️ edit';
+        document.querySelectorAll('[data-edit]').forEach(el =>
+            el.contentEditable = this.isActive ? 'true' : 'false');
+        if (!this.isActive) this.save();
+    },
+    save() {
+        const edits = {};
+        document.querySelectorAll('[data-edit]').forEach((el, i) => edits[i] = el.innerHTML);
+        localStorage.setItem(this.key, JSON.stringify(edits));
+    },
+    restore() {
+        const raw = localStorage.getItem(this.key);
+        if (!raw) return;
+        const edits = JSON.parse(raw);
+        document.querySelectorAll('[data-edit]').forEach((el, i) => {
+            if (edits[i] !== undefined) el.innerHTML = edits[i];
+        });
+    }
+};
+editor.restore();
+const editToggle = document.getElementById('editToggle');
+const hotzone = document.getElementById('editHotzone');
+let hideTimeout = null;
+editToggle.addEventListener('click', () => editor.toggle());
+hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+addEventListener('keydown', e => {
+    if (e.key === 'e' && !editor.isActive && !e.metaKey && !e.ctrlKey
+        && document.activeElement === document.body) editor.toggle();
+    if ((e.metaKey || e.ctrlKey) && e.key === 's' && editor.isActive) { e.preventDefault(); editor.save(); }
+});
+</script>
+</body>
+</html>
