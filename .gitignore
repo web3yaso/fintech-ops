@@ -7,3 +7,4 @@ eval/cache.jsonl
 # they power setup_demo.sh --offline and the console export on a fresh clone.
 out/watch_run.log
 out/intro_run.log
+.DS_Store
