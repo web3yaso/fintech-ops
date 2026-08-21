@@ -9,8 +9,9 @@ Advance on **[→]**.
 
 "Hi — I'm Sophie. This is my take-home. I call it Ops Control Tower.
 
-One thing before we start: I didn't build a chatbot that answers tickets
-faster. I built the structure around the tickets.
+One thing before we start — it's right there on the slide: this is not a
+faster chatbot. It's the structure around the tickets. One person owns every
+problem; four agents do the legwork.
 
 See this row of pills down here? That's a real state machine from the tool.
 Keep an eye on the last one — 'earned, not declared'. It'll make sense in a
