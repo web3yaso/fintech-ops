@@ -12,7 +12,7 @@ Real agent leverage is structural, not conversational.
 
 | effort | path |
 |---|---|
-| **2 seconds** | open **[`reports/console-snapshot.html`](reports/console-snapshot.html)** — zero-install snapshot of a real run: the queue with every score explained, incident/trend cards with closure states, the $118k wire work package, the audit trail |
+| **2 seconds** | **[`reports/console-snapshot.pdf`](reports/console-snapshot.pdf)** renders right here on GitHub — a snapshot of a real run: the queue with every score explained, incident/trend cards with closure states, the $118k wire work package, the audit trail. The interactive original is [`console-snapshot.html`](reports/console-snapshot.html) — **download it and open locally** (GitHub shows HTML files as source, it never renders them; the email attachment is the same file) |
 | 3 minutes | 📹 video: _[link goes here]_ · weekly brief: `reports/ops-brief-2026-W33.html` |
 | 30 minutes | `scripts/setup_demo.sh --dry-run` — recreates the live war room from the official signed OpenMausBot release (checksum- & notarization-verified, no sudo, offline by default without an API key) |
 

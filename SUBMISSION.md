@@ -1,8 +1,9 @@
 # Submission — Ops Control Tower
 **Loop take-home · Business Operations Associate · Sophie Huang**
 
-> **Try it in 2 seconds:** open `reports/console-snapshot.html` (zero-install
-> snapshot of a real run). · 📹 Video: _[link goes here]_ · Weekly brief:
+> **Try it in 2 seconds:** `reports/console-snapshot.pdf` renders inline on
+> GitHub; the interactive original `reports/console-snapshot.html` is the
+> email attachment — download and open locally (GitHub shows HTML as source). · 📹 Video: _[link goes here]_ · Weekly brief:
 > `reports/ops-brief-2026-W33.html` · Repo: this repository (private —
 > reviewer invites issued with the submission email).
 
