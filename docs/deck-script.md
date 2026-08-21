@@ -116,16 +116,19 @@ three real jobs when the team grows. **[→]**"
 And drafted customer replies — human-approved before anything goes out.
 Always.
 
-That's the project. One person, four agents, every decision gated, every
-action on the record.
+Which brings us back to this line. *Real agent leverage is structural, not
+conversational.* All it means is what you just watched: the win was never a
+smarter chat window. It's a workflow where nothing falls between people —
+one person, four agents, every decision gated, every action on the record.
 
-And if you've only got two seconds — open the console snapshot in the repo.
+If you've only got two seconds — open the console snapshot in the repo.
 It's a real run. Thanks for watching."
 
 ---
 
 **Delivery notes:** point the cursor at what you're naming — the dashed
 cells (s3), the red "cannot close" pill (s5), the red tile (s6). Pause a
-beat after "It'll make sense in a minute" (s1) and "the whole pitch" (s3).
+beat after "It'll make sense in a minute" (s1) and "the whole pitch" (s3);
+slow right down on the slogan gloss in s8 — it's the last thing they hear.
 If pairing with war-room footage: slides 1–3 as intro, cut to the live
 demo, come back for 6–8.
