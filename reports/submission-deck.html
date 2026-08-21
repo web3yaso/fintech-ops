@@ -49,6 +49,11 @@ img, video, canvas, svg { max-width: 100%; max-height: 100%; }
     .slide:last-child { break-after: auto; page-break-after: auto; }
     .deck-controls { display: none !important; }
 }
+/* automated browsers (PDF export) and print get instant reveals */
+.no-anim .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+@media print {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
 }
@@ -466,6 +471,7 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
    Keyboard (arrows/space/pgup/pgdn/home/end),
    wheel, and touch/swipe navigation.
    =========================================== */
+if (navigator.webdriver) document.documentElement.classList.add('no-anim');
 class SlidePresentation {
     constructor() {
         this.slides = document.querySelectorAll('.slide');
