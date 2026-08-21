@@ -7,6 +7,18 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
+- 2026-08-21 (session 3): incidents/, trends/, and out/actions.jsonl were empty
+  again at session start — third recurrence today (sessions 1, 2, and this
+  one), per Triage's queue note. Re-verified all three clusters against
+  data/tickets.csv from scratch a third time — identical membership, MRR
+  ($70,810 / $60,700 / $58,000), exclusions (TKT-2092, TKT-2095), and
+  INC-002's TKT-2072/TKT-2085 same-$118k-wire dedupe as every prior pass.
+  Re-filed all three cards and logged incident_card/trend_card. Per sophie
+  and Triage's request, escalating the missing-artifact issue itself in
+  chat this time instead of only re-filing — three wipes in one day is a
+  strong signal something in the harness/session lifecycle is deleting
+  incidents/, trends/, and out/actions.jsonl (all untracked-in-git paths)
+  between sessions, not a triage/pattern-commander behavior bug.
 - 2026-08-21 (session 2): incidents/ and trends/ were empty again at the start
   of this session (third occurrence today per Triage's queue note). Re-verified
   all three clusters against data/tickets.csv from scratch once more — same
