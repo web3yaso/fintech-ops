@@ -6,7 +6,6 @@ pipeline: detect cross-ticket patterns, investigate, hand findings to the
 teams that own the fixes, and track every pattern to confirmed closure.
 Real agent leverage is structural, not conversational.
 
-*Loop take-home · Sophie Huang · full write-up: [SUBMISSION.md](SUBMISSION.md)*
 
 ## Try it
 
