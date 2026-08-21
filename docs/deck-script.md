@@ -49,22 +49,25 @@ between.
 And look at the bottom-right corner. The FX signal actually lands on Mei's
 desk this time. Honestly — that one cell is the whole pitch. **[→]**"
 
-## 4 · The system (~25s)
+## 4 · How it's built: Claude + an open-source shell (~25s)
 
-"Under the hood. Four boxes, left to right.
+"So how is this built? Two halves on this slide.
 
-Tickets stream in here — a mock helpdesk replaying the dataset in real
-time. The second box is boring on purpose: plain deterministic Python.
-Finds incidents, finds trends, scores every ticket — and shows you the
-formula.
+Left half — an agent is not a service. It's a Claude CLI process plus three
+files. SKILL dot md is the job — only humans change that. NOTES is coaching
+from staff. The green one, KNOWLEDGE, the agent writes itself — and commits
+under its own git author, so you can read its learning history. Point any
+Claude process at this folder and it *becomes* the agent. Zero deployment.
 
-The interesting one is this box. Four agents living in an actual chat app —
-OpenMausBot, open source, MIT. I didn't fork it. Every bot is a real Claude
-process, and everything it knows is a file in the repo.
+Right half — the chat UI. OpenMausBot, open source, MIT. I didn't fork it.
+Every bot in it is a real Claude process, and I seeded the whole war room —
+seven members, two rooms, nine routines — through the app's own local API.
+Mentions hand work between agents; approval cards are the human gates. And
+the best part, last row: the shell holds zero business logic. Delete the
+app, everything still runs in a terminal.
 
-This dashed bar underneath? Whatever the team learns flows back into the
-pipeline. And these three pills at the bottom — those are the doors only a
-human can open. **[→]**"
+The ribbon at the bottom is the plumbing underneath — same picture as the
+README. **[→]**"
 
 ## 5 · Caught live, tracked to closed (~25s)
 

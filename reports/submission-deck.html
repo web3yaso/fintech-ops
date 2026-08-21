@@ -172,23 +172,28 @@ h2.sl-title em { font-style: normal; color: var(--blue); }
 .s3 .whyops .lab { font: 600 19px var(--font-mono); letter-spacing: .12em; color: var(--ink-4); text-transform: uppercase; flex: none; white-space: nowrap; }
 
 /* ===========================================
-   SLIDE 4 — HOW: system
+   SLIDE 4 — HOW: Claude agents in an open shell
    =========================================== */
-.s4 .flow { display: grid; grid-template-columns: 1fr 44px 1.15fr 44px 1.3fr 44px 1.15fr; align-items: stretch; gap: 0; margin-top: 40px; }
-.s4 .stagebox { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; display: flex; flex-direction: column; }
-.s4 .stagebox.hot { border-color: var(--blue); }
-.s4 .fa { display: grid; place-items: center; color: var(--ink-4); font: 600 26px var(--font-mono); }
-.s4 .stagebox h3 { font: 600 27px var(--font-display); margin-bottom: 10px; }
-.s4 .stagebox .mono { font: 400 18.5px/1.65 var(--font-mono); color: var(--ink-3); }
-.s4 .stagebox .mono b { color: var(--ink-2); font-weight: 600; }
-.s4 .feedback { margin-top: 22px; display: flex; align-items: center; gap: 18px;
-    background: var(--panel-deep); border: 1px dashed #2c4a72; border-radius: 12px;
-    padding: 14px 24px; font: 600 19px var(--font-mono); color: #9db8dc; }
-.s4 .feedback .ret { color: var(--blue); font-size: 26px; }
-.s4 .feedback .to { color: var(--ink-4); }
-.s4 .gates { margin-top: 22px; display: flex; gap: 14px; align-items: center; }
-.s4 .gates .lab { font: 600 20px var(--font-mono); letter-spacing: .14em; color: var(--ink-4); text-transform: uppercase; margin-right: 8px; }
-
+.s4 .cols { margin-top: 34px; grid-template-columns: 1fr 1.1fr; gap: 30px; }
+.s4 .pane { border-radius: 14px; padding: 26px 30px; }
+.s4 .pane.files { background: var(--panel); border: 1px solid var(--line); }
+.s4 .pane.shell { background: var(--panel); border: 1px solid var(--blue); }
+.s4 .plab { font: 600 18px var(--font-mono); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 16px; }
+.s4 .pane.files .plab { color: var(--green); }
+.s4 .pane.shell .plab { color: var(--blue); }
+.s4 .frow { display: flex; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.s4 .frow:last-child { border-bottom: 0; }
+.s4 .fname { flex: none; width: 218px; font: 600 20px var(--font-mono); color: var(--ink); }
+.s4 .fname.g { color: var(--green); }
+.s4 .fdesc { font: 500 22px/1.4 var(--font-display); color: var(--ink-2); }
+.s4 .fdesc b { color: var(--ink); }
+.s4 .ribbon { margin-top: 28px; background: var(--panel-deep); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; gap: 16px;
+    font: 600 19px var(--font-mono); color: var(--ink-3); flex-wrap: nowrap; }
+.s4 .ribbon .n { color: var(--ink-2); }
+.s4 .ribbon .a { color: var(--ink-4); }
+.s4 .ribbon .fb { color: #9db8dc; margin-left: auto; }
+.s4 .ribbon .fb .ret { color: var(--blue); }
 /* ===========================================
    SLIDE 5 — HOW: live catch + closure
    =========================================== */
@@ -334,32 +339,35 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
     </div>
 </section>
 
-<!-- ============ SLIDE 4 · Q3 HOW: SYSTEM ============ -->
+<!-- ============ SLIDE 4 · Q3 HOW: CLAUDE + OPEN-SOURCE SHELL ============ -->
 <section class="slide s4">
     <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
-        <span class="path">q3 — how · the system</span><span class="pageno">04 / 08</span></div>
+        <span class="path">q3 — how · claude agents in an open-source shell</span><span class="pageno">04 / 08</span></div>
     <div class="wrap">
-        <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — ONE SHARED TEAM OF AGENTS</div>
-        <h2 class="sl-title reveal r1" data-edit>The team shares agents —<br>nobody prompts alone.</h2>
-        <div class="flow reveal r2">
-            <div class="stagebox"><h3 data-edit>Helpdesk seam</h3><div class="mono" data-edit>mock API replays the queue as a <b>real-time stream</b>; labels written back. CSV fallback.</div></div>
-            <div class="fa">→</div>
-            <div class="stagebox"><h3 data-edit>Deterministic pipeline</h3><div class="mono" data-edit>LLM enrichment → validated schema<br><b>burst + trend detectors</b> + precedence<br>explainable score — formula shown</div></div>
-            <div class="fa">→</div>
-            <div class="stagebox hot"><h3 data-edit>War room (OpenMausBot, MIT)</h3><div class="mono" data-edit><b>Triage · Pattern Commander · Case Worker · Liaison</b> + simulated colleagues from eng/product/compliance. One workspace = maximal shared context. The incident manager holds every gate.</div></div>
-            <div class="fa">→</div>
-            <div class="stagebox"><h3 data-edit>Outputs that travel</h3><div class="mono" data-edit>incident cards · work packages<br>briefs → eng/product · <b>OPS-xxx</b> filed<br>weekly brief + console snapshot</div></div>
+        <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — AGENTS ARE FILES; THE CHAT APP IS BORROWED</div>
+        <h2 class="sl-title reveal r1" data-edit>An agent is <em>three files and a folder</em>.<br>The UI is an open-source app, unforked.</h2>
+        <div class="cols">
+            <div class="pane files reveal r2">
+                <div class="plab" data-edit>Each agent = Claude CLI + these files</div>
+                <div class="frow"><span class="fname" data-edit>SKILL.md</span><span class="fdesc" data-edit>the job, file contracts, guardrails — <b>humans-only</b>, changed by approved proposals</span></div>
+                <div class="frow"><span class="fname" data-edit>NOTES.md</span><span class="fdesc" data-edit>coaching rules from staff — capped at 20, git-audited</span></div>
+                <div class="frow"><span class="fname g" data-edit>KNOWLEDGE.md</span><span class="fdesc" data-edit>self-learned facts — nightly journals; the agent commits under <b>its own git author</b></span></div>
+                <div class="frow"><span class="fname" data-edit>cwd = repo</span><span class="fdesc" data-edit>point any <b>claude</b> process at this folder and it <b>becomes</b> the agent — zero deployment</span></div>
+            </div>
+            <div class="pane shell reveal r3">
+                <div class="plab" data-edit>The shell — OpenMausBot (open source, MIT)</div>
+                <div class="frow"><span class="fname" data-edit>real processes</span><span class="fdesc" data-edit>every bot is a genuine <b>claude</b> CLI process — no proxy, no wrapper</span></div>
+                <div class="frow"><span class="fname" data-edit>seeded via API</span><span class="fdesc" data-edit>7 members · 2 rooms · 9 routines through the app's <b>own local API</b> — zero fork, signed binary untouched</span></div>
+                <div class="frow"><span class="fname" data-edit>@Name = handoff</span><span class="fdesc" data-edit>mentions trigger teammates; <b>approval cards</b> are the human gates</span></div>
+                <div class="frow"><span class="fname" data-edit>disposable</span><span class="fdesc" data-edit>the shell holds <b>zero business logic</b> — delete it and everything runs in a plain terminal</span></div>
+            </div>
         </div>
-        <div class="feedback reveal r3">
-            <span class="ret">↺</span>
-            <span data-edit>feedback loops: corrections · coaching · knowledge · skill proposals</span>
-            <span class="to" data-edit>→ back into the pipeline (few-shot, overrides, merge rules, eval cases)</span>
-        </div>
-        <div class="gates reveal r4">
-            <span class="lab" data-edit>Human gates:</span>
-            <span class="chip" data-edit>escalation — @Liaison go ahead</span>
-            <span class="chip" data-edit>customer drafts — draft_approved</span>
-            <span class="chip" data-edit>skill changes — approve SCP-xxx</span>
+        <div class="ribbon reveal r4">
+            <span class="n" data-edit>helpdesk replay</span><span class="a">→</span>
+            <span class="n" data-edit>pipeline: enrich · detect · score</span><span class="a">→</span>
+            <span class="n" data-edit>war room</span><span class="a">→</span>
+            <span class="n" data-edit>cards · briefs · OPS-xxx · weekly brief</span>
+            <span class="fb"><span class="ret">↺</span> <span data-edit>corrections · coaching · knowledge · proposals feed back in</span></span>
         </div>
     </div>
     <div class="trail reveal r5"><span class="who">audit</span> every action → out/actions.jsonl · <b>--history TKT-2072</b> answers "what happened to this ticket?" in one command</div>
