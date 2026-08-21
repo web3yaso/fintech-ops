@@ -37,7 +37,14 @@ show the queue table with the 4 risk tickets pinned, then open
 *War-room variant (primary): shoot this scene in OpenMausBot instead — the
 3-kickoff flow in `docs/openmausbot-setup.md` (Triage → Pattern Commander
 auto-handoff; you, as incident manager sophie, green-light `@Liaison go
-ahead`; Alex/Mei respond in human voice). The file walkthrough below is the
+ahead`; Alex/Mei respond in human voice). Then the **closure beat (~15s)**:
+per setup doc step 2b you log owner_acked → draft_approved → fix_confirmed →
+customers_notified for INC-001 and rerun metrics — the card's closure cell
+advances and time-to-close fills in, while INC-002 visibly stays
+"cannot close" (its theme is still active). Two lines to say on camera:
+"every customer draft stays DRAFT until a human releases it — the send
+button is never the AI's" and "the pattern advances toward closed — state
+tracking, not fix verification." The file walkthrough below is the
 plain-Claude-Code fallback.*
 - Open `incidents/INC-001.md`: blast radius by MRR, canonical customer draft,
   membership note ("the classifier flags TKT-2070 as a probable 14th member —

@@ -137,6 +137,26 @@ escalation decision is yours — kickoff ② IS the approval. Say so on camera.
    Triage/PC will have addressed you by name; once the card is up, reply
    `@Liaison go ahead` → Liaison writes the brief ("For: Alex Osei"), files
    OPS-xxx, logs → **Alex auto-fires**: human-voice ack + one sharp question
+
+2b. **Closure beat — the send button stays human (~15s, terminal on screen):**
+   after Alex acks, walk INC-001 through its closure states yourself — the
+   humans' half of the state machine:
+   ```bash
+   python -m src.action_log --actor liaison --action owner_acked \
+       --tickets TKT-2059 --artifact INC-001 --note "Alex acked the brief in the war room"
+   python -m src.action_log --actor sophie --action draft_approved \
+       --tickets TKT-2059 --artifact incidents/INC-001.md --note "canonical customer update released for sending"
+   python -m src.action_log --actor sophie --action fix_confirmed \
+       --tickets TKT-2059 --artifact INC-001 --note "eng confirmed the CNP config rollback"
+   python -m src.action_log --actor sophie --action customers_notified \
+       --tickets TKT-2059 --artifact INC-001 --note "canonical update sent to the 12 affected customers"
+   python -m src.metrics   # the card's closure cell advances; time-to-close fills in
+   ```
+   Say on camera: *"Every customer-facing draft stays DRAFT until a human
+   releases it — the send button is never the AI's."* Narration discipline:
+   say "the pattern advances toward closed", never "the system verified the
+   fix" — this is state tracking, not fix verification. (INC-002 stays
+   un-closable on screen: its theme is still active — point that out too.)
 3. **Kickoff ③ — feedback beat, you → Triage:**
    `correction: TKT-2071 segment should be incident_candidate — expected
    inbound wires that haven't arrived look platform-side. — sophie`
@@ -161,6 +181,9 @@ personas silent = the mention wasn't exactly `@Alex` / `@Mei` / `@Raj`.
 - [ ] Triage's correction line lands in `feedback/corrections.jsonl` with author+date
 - [ ] Liaison's issue key comes from the real mock tracker (check `GET /issues`)
 - [ ] A NOTES.md rule added in chat shows up in `git diff`
+- [ ] Closure beat: `--history TKT-2059` shows owner_acked → draft_approved →
+      fix_confirmed → customers_notified, and the regenerated brief shows
+      INC-001's state + time-to-close while INC-002 still says "cannot close"
 - [ ] Screen-record the room for Scene 2 footage
 
 ## Command approvals
