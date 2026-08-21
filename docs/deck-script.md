@@ -1,100 +1,130 @@
-# Deck narration script — ~3 minutes, 8 slides
+# Deck narration — spoken, ~2:50, 8 slides
 
-Spoken English, one block per slide. Advance on the **[→]** marker.
-Total ≈ 2:50 at a calm pace; cut the bracketed optional lines to hit 2:30.
+Talk, don't read. Every line points at something visible on the slide.
+Advance on **[→]**.
 
 ---
 
-## Slide 1 · Cover (~15s)
+## 1 · Cover (~15s)
 
-"This is Ops Control Tower — one human loop owner plus an AI execution
-layer. The one-line thesis: real agent leverage is structural, not
-conversational. That row of chips at the bottom is a real state machine
-from the tool — notice the last state says *earned, not declared*. We'll
-come back to that. **[→]**"
+"Hi — I'm Sophie. This is my take-home. I call it Ops Control Tower.
 
-## Slide 2 · Q1 — Problem (~25s)
+One thing before we start: I didn't build a chatbot that answers tickets
+faster. I built the structure around the tickets.
 
-"First, the problem I chose. Ops integrates more information than any other
-role, but it still works one ticket at a time. In this dataset, thirty-eight
-of a hundred tickets aren't support work at all. A four-day card outage
-lived as fourteen separate tickets under fourteen different subject lines.
-Three hundred forty-two thousand dollars of wires sat stuck across nine
-more. A three-week churn trend scored CSAT 1.67 eleven times in a row. And
-a probable account takeover hid under the subject line 'Quick question.'
-None of these ever reached the people who owned them. Ops doesn't need a
-faster version of the old way of working — it needs an AI-native one. **[→]**"
+See this row of pills down here? That's a real state machine from the tool.
+Keep an eye on the last one — 'earned, not declared'. It'll make sense in a
+minute. **[→]**"
 
-## Slide 3 · Q2 — Why (~25s)
+## 2 · The problem (~25s)
 
-"Here's the same failure as a picture. On the left, the old shape: functions
-own columns, problems travel by handoff — and look at the dashed cells:
-engineering was never told, and the FX churn signal *never reached product
-at all*. On the right, the transposed shape: one loop, one owner. Sophie —
-the green cells — owns each problem end to end, and agents fill every cell
-that used to be a handoff. Same grid, and this time the churn loop reaches
-Mei in product. [Why start in ops? Highest volume, densest information —
-and every ticket is a free training signal.] **[→]**"
+"So, a hundred tickets. Looks like a normal support queue. It isn't.
 
-## Slide 4 · Q3 — The system (~25s)
+These four cards are what's hiding inside it.
 
-"How it works. The whole team shares one set of agents instead of everyone
-prompting alone. Underneath is a deterministic pipeline — LLM enrichment
-into a validated schema, burst and trend detectors, and a priority score
-that shows its own formula. Agents only consume what the pipeline computed;
-they never re-derive it — and every feedback channel, corrections through skill proposals, flows straight back into that pipeline. The four agents live in a war room built on
-OpenMausBot — an open-source MIT desktop app where every bot is a real
-Claude CLI process. I seeded it through its own local API: zero forking,
-the signed binary untouched, and the shell carries no business logic — the
-intelligence lives in version-controlled files. And note the human gates:
-escalation, customer drafts, and skill changes all stop at a named person.
+This outage? Fourteen tickets, four days — and nobody ever said the word
+'incident'. This one — three hundred forty grand stuck, payroll blocked.
+This trend ran for three weeks. One angry ticket every two days — no single
+day ever looked urgent. And my favorite — this ticket's subject line is
+'Quick question'. It's probably an account takeover.
+
+Answering tickets faster fixes none of these. That's the line at the
+bottom. **[→]**"
+
+## 3 · Why (~25s)
+
+"Same story, as a picture.
+
+Left side is today. Every box is a different person. Work bounces between
+them. Now look at the dashed red boxes — engineering? Never told. Product?
+Never reached. Eleven complaints, answered eleven times, and the pricing
+owner never heard a word.
+
+Right side is my version. The green boxes — that's one human. Me. Owning
+each row start to finish. The blue boxes are agents doing everything in
+between.
+
+And look at the bottom-right corner. The FX signal actually lands on Mei's
+desk this time. Honestly — that one cell is the whole pitch. **[→]**"
+
+## 4 · The system (~25s)
+
+"Under the hood. Four boxes, left to right.
+
+Tickets stream in here — a mock helpdesk replaying the dataset in real
+time. The second box is boring on purpose: plain deterministic Python.
+Finds incidents, finds trends, scores every ticket — and shows you the
+formula.
+
+The interesting one is this box. Four agents living in an actual chat app —
+OpenMausBot, open source, MIT. I didn't fork it. Every bot is a real Claude
+process, and everything it knows is a file in the repo.
+
+This dashed bar underneath? Whatever the team learns flows back into the
+pipeline. And these three pills at the bottom — those are the doors only a
+human can open. **[→]**"
+
+## 5 · Caught live, tracked to closed (~25s)
+
+"Here it is actually running.
+
+First decline ticket — eight thirty in the morning. Third similar one lands
+at quarter to four, and the tool declares an incident. Seven hours in. The
+real team took three days.
+
+But the part I actually care about is the right side. Because finding it
+isn't fixing it.
+
+Top row — INC-001 walked the whole way: acked, fix confirmed, customers
+told. Four hundred and ten hours, and that number goes on the weekly
+report. Bottom row — look at the red pill. It refuses to close. Customers
+are still reporting it. The tool will not let anyone call a thing done when
+it isn't. **[→]**"
+
+## 6 · Learning (~25s)
+
+"Do the agents get better? Yes — four ways, and each way has a different
+boss.
+
+Corrections — only ops can make those. Coaching — one rule at a time, hard
+cap. The green card — agents teach themselves, journals every night. But
+facts only. They cannot rewrite their own rules. Which is the fourth card:
+changing an agent's job description takes a human. Full stop.
+
+And these tiles are the receipts. Two corrections: seventy-five to
+ninety-six percent. This red one? Same test caught a correction making
+something *else* worse — the scale weighs both directions. And this green
+one — every planted pattern in the dataset, found, zero false alarms.
 **[→]**"
 
-## Slide 5 · Q3 — Caught live, tracked to closed (~25s)
+## 7 · Assumptions (~20s)
 
-"Detection is live: the card incident was declared on the third arriving
-ticket, seven hours in — the real team worked those as separate cases for
-three days. But found is not fixed. Every pattern carries a closure state
-machine, and *closed* has to be earned: the theme's ticket volume must
-actually return to baseline. That's why INC-001 shows a time-to-close,
-while INC-002 refuses to close — its theme was still producing tickets.
-This is state tracking, not fix verification — and the send button is
-never the AI's. **[→]**"
+"So what am I actually assuming? Honestly — a team shape.
 
-## Slide 6 · Q3 — Four learning channels (~25s)
+Four agent jobs on top. Three human jobs underneath: someone runs the
+loops, someone writes the playbooks, someone signs off on what leaves the
+building.
 
-"The team learns on four channels, each with the right authority.
-Corrections are role-gated in code, and one correction becomes an override,
-a few-shot example, and an eval case in a single step. Coaching lands in
-capped, git-audited notes. Agents self-learn into their own knowledge files
-— facts only, never rules; that separation is the prompt-injection
-firewall — and they commit under their own git author. And the skills
-themselves evolve humans-only. The numbers underneath are the proof: two
-staff corrections lifted segment accuracy from 75 to 96 percent — and the
-same eval run caught a coaching side effect. Detection is now fourteen of
-fourteen, nine of nine, eleven of eleven, zero false positives. **[→]**"
+In this demo all three humans are me. But these four pills — they're
+permission gates, in code. And they sit exactly where you'd cut this into
+three real jobs when the team grows. **[→]**"
 
-## Slide 7 · Q4 — Assumptions (~20s)
+## 8 · Close (~15s)
 
-"My core assumption is a team design. Four agent roles doing execution,
-and three human roles doing judgment: a loop owner, a platform specialist
-who encodes expertise into playbooks, and a loop manager who approves
-anything outbound. In this demo one operator wears all three hats — and
-the roster's four role gates are exactly the seams where those hats split
-at scale. **[→]**"
+"What's next: a live dashboard. Letting the eval history tune the skills.
+And drafted customer replies — human-approved before anything goes out.
+Always.
 
-## Slide 8 · Q5 — Close (~15s)
+That's the project. One person, four agents, every decision gated, every
+action on the record.
 
-"With more time: a live dashboard, eval-driven skill optimization, and
-human-gated outbound replies. But the claim stands as built: real agent
-leverage is structural, not conversational. You can verify that in two
-seconds — the console snapshot in the repo is a real run, and everything
-you just saw reproduces from one verified script. Thank you."
+And if you've only got two seconds — open the console snapshot in the repo.
+It's a real run. Thanks for watching."
 
 ---
 
-**Delivery notes:** slow down on "earned, not declared" (s1), "never
-reached product" (s3), "zero forking, the signed binary untouched" (s4),
-and the closing thesis (s8). If pairing with the live war-room footage,
-this deck script plays as the intro (slides 1-3), then cut to the live
-demo, then return for slides 6-8.
+**Delivery notes:** point the cursor at what you're naming — the dashed
+cells (s3), the red "cannot close" pill (s5), the red tile (s6). Pause a
+beat after "It'll make sense in a minute" (s1) and "the whole pitch" (s3).
+If pairing with war-room footage: slides 1–3 as intro, cut to the live
+demo, come back for 6–8.
