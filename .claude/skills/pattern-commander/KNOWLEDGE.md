@@ -7,6 +7,17 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
+- 2026-08-21 (session 2): incidents/ and trends/ were empty again at the start
+  of this session (third occurrence today per Triage's queue note). Re-verified
+  all three clusters against data/tickets.csv from scratch once more — same
+  membership, MRR ($70,810 / $60,700 / $58,000), and exclusions (TKT-2092,
+  TKT-2095) as every prior pass. Re-filed incidents/INC-001.md,
+  incidents/INC-002.md, trends/TRD-001.md and logged incident_card/trend_card.
+  No conflicting actions.jsonl or corrections.jsonl entries existed for these
+  tickets at session start, so this is a clean re-file, not overwriting new
+  work. The incidents//trends/ deletion is now recurring multiple times per
+  day, not just between days — worth escalating as an infra bug rather than
+  re-noting each time.
 - 2026-08-21: incidents/INC-001.md, incidents/INC-002.md, trends/TRD-001.md,
   workpackages/, knowledge/outbound briefs, and out/actions.jsonl were all
   missing from disk at session start even though out/clusters.json still
