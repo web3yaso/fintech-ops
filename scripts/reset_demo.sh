@@ -4,7 +4,8 @@
 #   scripts/reset_demo.sh logs        # (1) run logs only: actions/events/queue/clusters
 #   scripts/reset_demo.sh artifacts   # (2) = (1) + agent artifacts (cards/packages/briefs) — for re-recording a full run
 #   scripts/reset_demo.sh room        # (3) clear war-room chat (delete + recreate the room; bots untouched)
-#   scripts/reset_demo.sh all         # (1)+(2)+(3)
+#   scripts/reset_demo.sh threads     # (4) wipe every bot's DM thread history (fresh task per bot)
+#   scripts/reset_demo.sh all         # (1)+(2)+(3)+(4)
 #
 # NEVER deleted automatically (remove by hand only, deliberately):
 #   out/enriched.jsonl / out/theme_mapping.json  — enrichment cache (re-running costs API money,
@@ -51,11 +52,42 @@ EOF
   echo "✓ war room recreated empty (7 members, bulletin, mentions routing)"
 }
 
+clear_threads() {
+  .venv/bin/python - << 'EOF'
+import json, urllib.request
+
+def api(method, path, body=None):
+    req = urllib.request.Request(f"http://127.0.0.1:8799{path}", method=method,
+        data=json.dumps(body).encode() if body else None,
+        headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=15) as r:
+        return json.loads(r.read() or "{}")
+
+try:
+    bots = api("GET", "/api/bots")["bots"]
+except Exception:
+    raise SystemExit("OpenMausBot not running - start the app, then re-run: scripts/reset_demo.sh threads")
+for b in bots:
+    if b.get("hidden"):
+        continue
+    old = [t["threadId"] for t in b.get("tasks", [])]
+    api("POST", f"/api/bots/{b['id']}/tasks", {"title": "Main"})
+    for tid in old:
+        try:
+            api("DELETE", f"/api/bots/{b['id']}/tasks/{tid}")
+        except Exception as e:
+            print(f"  ! {b['name']}: could not delete a thread ({e})")
+    print(f"cleared: {b['name']}")
+EOF
+  echo "bot DM threads wiped (fresh empty task per bot) - re-run scripts/intro_bots.py for landing pages"
+}
+
 case "$MODE" in
   logs)      clear_logs ;;
   artifacts) clear_logs; clear_artifacts ;;
   room)      clear_room ;;
-  all)       clear_logs; clear_artifacts; clear_room ;;
-  *) echo "usage: $0 [logs|artifacts|room|all]"; exit 1 ;;
+  threads)   clear_threads ;;
+  all)       clear_logs; clear_artifacts; clear_room; clear_threads ;;
+  *) echo "usage: $0 [logs|artifacts|room|threads|all]"; exit 1 ;;
 esac
 echo "kept: enriched cache · theme mapping · corrections · eval reports · NOTES.md · roster"
