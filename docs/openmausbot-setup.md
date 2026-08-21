@@ -118,8 +118,10 @@ four skills; the skill descriptions map these phrases to the right workflow.
 Pre-flight: mock helpdesk running
 (`.venv/bin/python -m src.mock_helpdesk --cursor 2026-08-03T00:00 --speed 3600`).
 
-**Your identity: you are sophie — the incident manager** (roster role
-`approve_escalations`). Bots address you by name when a declared pattern
+**Your identity: you are sophie — the loop owner** (the Q2/Q4 role in
+SUBMISSION.md; "incident manager" is this same role's war-room title,
+roster role `approve_escalations`). In this single-operator demo she
+also wears the platform-specialist and loop-manager hats. Bots address you by name when a declared pattern
 needs an escalation decision; only you green-light Liaison. Sign corrections
 `— sophie`; voice marcus only when demonstrating a second ops member.
 
