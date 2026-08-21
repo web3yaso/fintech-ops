@@ -8,3 +8,4 @@ eval/cache.jsonl
 out/watch_run.log
 out/intro_run.log
 .DS_Store
+docs/deck-script.md
