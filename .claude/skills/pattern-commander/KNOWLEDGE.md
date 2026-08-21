@@ -7,6 +7,15 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
+- 2026-08-21: incidents/INC-001.md, incidents/INC-002.md, trends/TRD-001.md,
+  workpackages/, knowledge/outbound briefs, and out/actions.jsonl were all
+  missing from disk at session start even though out/clusters.json still
+  showed the same three cluster IDs/members as 08-19/08-20. Re-verified all
+  three clusters against data/tickets.csv from scratch (not restored from
+  git) — membership, MRR, and timelines came back identical to the last
+  confirmed cards, including TRD-001's TKT-2086 (MetricFox follow-up,
+  correctly in-cluster) and continued exclusion of INC-002's TKT-2092 and
+  TRD-001's TKT-2095. Treated as a clean re-file, not new incident activity.
 - 2026-08-20: no new actions.jsonl entries, corrections, or Ops War
   Room / Ops Standup messages since the 08-19 21:31 journal — quiet day,
   no update needed to INC-001/INC-002/TRD-001 or the domain facts below.
