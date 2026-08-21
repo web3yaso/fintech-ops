@@ -373,10 +373,38 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
     <div class="trail reveal r5"><span class="who">audit</span> every action → out/actions.jsonl · <b>--history TKT-2072</b> answers "what happened to this ticket?" in one command</div>
 </section>
 
+<!-- ============ SLIDE 7 · Q4 ASSUMPTIONS ============ -->
+<section class="slide s7">
+    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
+        <span class="path">q4 — assumptions · team design</span><span class="pageno">05 / 08</span></div>
+    <div class="wrap">
+        <div class="kicker reveal r1"><span class="qtag">Q4 ·</span> KEY ASSUMPTIONS</div>
+        <h2 class="sl-title reveal r1" data-edit>The core assumption is a <em>team design</em>.</h2>
+        <div class="rowlab reveal r2" data-edit>4 agent roles — execution</div>
+        <div class="roles reveal r2">
+            <div class="card"><h3 data-edit>Triage</h3><p data-edit>queue, routing, corrections</p></div>
+            <div class="card"><h3 data-edit>Pattern Commander</h3><p data-edit>incident & trend cards</p></div>
+            <div class="card"><h3 data-edit>Case Worker</h3><p data-edit>playbook work packages</p></div>
+            <div class="card"><h3 data-edit>Liaison</h3><p data-edit>cross-team briefs, tracker</p></div>
+        </div>
+        <div class="rowlab reveal r3" data-edit>3 human roles — judgment (one operator wears all three hats in this demo)</div>
+        <div class="roles h3 reveal r3">
+            <div class="card"><h3 data-edit>Loop owner</h3><p data-edit>runs the queue, makes the calls</p></div>
+            <div class="card"><h3 data-edit>Platform specialist</h3><p data-edit>encodes expertise into playbooks & skills</p></div>
+            <div class="card"><h3 data-edit>Loop manager</h3><p data-edit>reviews corrections, approves outbound</p></div>
+        </div>
+        <div class="seams reveal r4">
+            <span class="rowlab" style="margin:0" data-edit>The seams where they split at scale:</span>
+            <span class="chip">correct_labels</span><span class="chip">approve_drafts</span><span class="chip">approve_escalations</span><span class="chip">approve_skill_changes</span>
+        </div>
+        <div class="assump reveal r5" data-edit>Also assumed: ticket text is the only system of record · monthly revenue proxies impact · synthetic data → no privacy concern in LLM calls</div>
+    </div>
+</section>
+
 <!-- ============ SLIDE 5 · Q3 HOW: LIVE CATCH + CLOSURE ============ -->
 <section class="slide s5">
     <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
-        <span class="path">q3 — how · caught live, tracked to closed</span><span class="pageno">05 / 08</span></div>
+        <span class="path">q3 — how · caught live, tracked to closed</span><span class="pageno">06 / 08</span></div>
     <div class="wrap">
         <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — DETECTION IS LIVE, CLOSURE IS EARNED</div>
         <h2 class="sl-title reveal r1" data-edit>Caught on the <em>third ticket</em> — then tracked to closed.</h2>
@@ -412,7 +440,7 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
 <!-- ============ SLIDE 6 · Q3 HOW: LEARNING ============ -->
 <section class="slide s6">
     <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
-        <span class="path">q3 — how · four learning channels</span><span class="pageno">06 / 08</span></div>
+        <span class="path">q3 — how · four learning channels</span><span class="pageno">07 / 08</span></div>
     <div class="wrap">
         <div class="kicker reveal r1"><span class="qtag">Q3 ·</span> HOW — THE TEAM LEARNS, WITH AUTHORITY CHECKED</div>
         <h2 class="sl-title reveal r1" data-edit>Four channels. <em>Each with the right authority.</em></h2>
@@ -428,34 +456,6 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
             <div class="tile"><div class="v green">14/14 · 9/9 · 11/11</div><div class="l" data-edit>detection, zero false positives</div></div>
             <div class="tile"><div class="v">71</div><div class="l" data-edit>tests green · 24-ticket golden eval</div></div>
         </div>
-    </div>
-</section>
-
-<!-- ============ SLIDE 7 · Q4 ASSUMPTIONS ============ -->
-<section class="slide s7">
-    <div class="topbar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span>
-        <span class="path">q4 — assumptions · team design</span><span class="pageno">07 / 08</span></div>
-    <div class="wrap">
-        <div class="kicker reveal r1"><span class="qtag">Q4 ·</span> KEY ASSUMPTIONS</div>
-        <h2 class="sl-title reveal r1" data-edit>The core assumption is a <em>team design</em>.</h2>
-        <div class="rowlab reveal r2" data-edit>4 agent roles — execution</div>
-        <div class="roles reveal r2">
-            <div class="card"><h3 data-edit>Triage</h3><p data-edit>queue, routing, corrections</p></div>
-            <div class="card"><h3 data-edit>Pattern Commander</h3><p data-edit>incident & trend cards</p></div>
-            <div class="card"><h3 data-edit>Case Worker</h3><p data-edit>playbook work packages</p></div>
-            <div class="card"><h3 data-edit>Liaison</h3><p data-edit>cross-team briefs, tracker</p></div>
-        </div>
-        <div class="rowlab reveal r3" data-edit>3 human roles — judgment (one operator wears all three hats in this demo)</div>
-        <div class="roles h3 reveal r3">
-            <div class="card"><h3 data-edit>Loop owner</h3><p data-edit>runs the queue, makes the calls</p></div>
-            <div class="card"><h3 data-edit>Platform specialist</h3><p data-edit>encodes expertise into playbooks & skills</p></div>
-            <div class="card"><h3 data-edit>Loop manager</h3><p data-edit>reviews corrections, approves outbound</p></div>
-        </div>
-        <div class="seams reveal r4">
-            <span class="rowlab" style="margin:0" data-edit>The seams where they split at scale:</span>
-            <span class="chip">correct_labels</span><span class="chip">approve_drafts</span><span class="chip">approve_escalations</span><span class="chip">approve_skill_changes</span>
-        </div>
-        <div class="assump reveal r5" data-edit>Also assumed: ticket text is the only system of record · monthly revenue proxies impact · synthetic data → no privacy concern in LLM calls</div>
     </div>
 </section>
 
