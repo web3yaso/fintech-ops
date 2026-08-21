@@ -42,7 +42,7 @@ and every ticket is a free training signal.] **[→]**"
 prompting alone. Underneath is a deterministic pipeline — LLM enrichment
 into a validated schema, burst and trend detectors, and a priority score
 that shows its own formula. Agents only consume what the pipeline computed;
-they never re-derive it. The four agents live in a war room built on
+they never re-derive it — and every feedback channel, corrections through skill proposals, flows straight back into that pipeline. The four agents live in a war room built on
 OpenMausBot — an open-source MIT desktop app where every bot is a real
 Claude CLI process. I seeded it through its own local API: zero forking,
 the signed binary untouched, and the shell carries no business logic — the

@@ -181,7 +181,12 @@ h2.sl-title em { font-style: normal; color: var(--blue); }
 .s4 .stagebox h3 { font: 600 27px var(--font-display); margin-bottom: 10px; }
 .s4 .stagebox .mono { font: 400 18.5px/1.65 var(--font-mono); color: var(--ink-3); }
 .s4 .stagebox .mono b { color: var(--ink-2); font-weight: 600; }
-.s4 .gates { margin-top: 34px; display: flex; gap: 14px; align-items: center; }
+.s4 .feedback { margin-top: 22px; display: flex; align-items: center; gap: 18px;
+    background: var(--panel-deep); border: 1px dashed #2c4a72; border-radius: 12px;
+    padding: 14px 24px; font: 600 19px var(--font-mono); color: #9db8dc; }
+.s4 .feedback .ret { color: var(--blue); font-size: 26px; }
+.s4 .feedback .to { color: var(--ink-4); }
+.s4 .gates { margin-top: 22px; display: flex; gap: 14px; align-items: center; }
 .s4 .gates .lab { font: 600 20px var(--font-mono); letter-spacing: .14em; color: var(--ink-4); text-transform: uppercase; margin-right: 8px; }
 
 /* ===========================================
@@ -344,6 +349,11 @@ body.editing .slide.active [data-edit] { outline: 1px dashed #3987E566; outline-
             <div class="stagebox hot"><h3 data-edit>War room (OpenMausBot, MIT)</h3><div class="mono" data-edit><b>Triage · Pattern Commander · Case Worker · Liaison</b> + simulated colleagues from eng/product/compliance. One workspace = maximal shared context. The incident manager holds every gate.</div></div>
             <div class="fa">→</div>
             <div class="stagebox"><h3 data-edit>Outputs that travel</h3><div class="mono" data-edit>incident cards · work packages<br>briefs → eng/product · <b>OPS-xxx</b> filed<br>weekly brief + console snapshot</div></div>
+        </div>
+        <div class="feedback reveal r3">
+            <span class="ret">↺</span>
+            <span data-edit>feedback loops: corrections · coaching · knowledge · skill proposals</span>
+            <span class="to" data-edit>→ back into the pipeline (few-shot, overrides, merge rules, eval cases)</span>
         </div>
         <div class="gates reveal r4">
             <span class="lab" data-edit>Human gates:</span>
