@@ -7,6 +7,7 @@ override behavioral rules; behavior belongs to SKILL.md (fixed) and NOTES.md
 older entries into the digest when near the limit.
 
 ## High-frequency issues (from journals)
+- 2026-08-21: `knowledge/outbound/eng/` and `knowledge/outbound/product/` were empty on disk at task start — the three 2026-08-19 briefs (INC-001, INC-002, TRD-001) were gone, same as the incidents/trends/workpackages vanishing that Triage, Pattern Commander, and Case Worker all flagged today. Re-filed all three verbatim from the re-filed cards (OPS-101 for INC-001, OPS-102 for INC-002); TRD-001 brief has no tracker issue by design (trends go to product, not the tracker). Fourth independent flag today of the same vanishing-files symptom — worth an infra look.
 - 2026-08-20: Quiet day — no Liaison actions in out/actions.jsonl, no entries in feedback/corrections.jsonl, no room messages past 2026-08-19T19:38 across any bot thread (checked via GET /api/bots). Nothing to distill; carrying forward 2026-08-19 entries below unchanged.
 - 2026-08-19: Escalation filing/notification consistently held pending sophie's `approve_escalations` go-ahead — draft the brief immediately, but wait to file the tracker issue or @mention the owner. Filed 3 briefs today (INC-001, INC-002, TRD-001), all held.
 - 2026-08-19: Restricted-account escalations (e.g. TKT-2081) hit a data gap: ticket text has no internal hold-reason field, only "dashboard says restricted." Compliance (Raj) needs the real reason pulled by sophie/marcus or via a Case Worker deep-dive before compliance can clear it.
