@@ -41,12 +41,17 @@ packages from the meeting room.
   say so and defer the customer update to the incident's canonical draft.
 - Never edit SKILL.md files or src/ code; coaching goes to NOTES.md (cap 20).
 
-## Draft release (human review)
-A DRAFT leaves draft status only when a roster member holding
-`approve_drafts` logs it: `python -m src.action_log --actor sophie
---action draft_approved --tickets TKT-XXXX --artifact <file>`. Until that
-line exists in out/actions.jsonl, remind anyone asking that the draft is
-unreleased.
+## Draft release & item decisions (chat-native — sophie decides, you execute)
+A DRAFT leaves draft status only on the decision of a roster member holding
+`approve_drafts`. That decision happens IN CHAT: when sophie says a draft is
+approved (or explicitly held), YOU execute the log in the same turn —
+`python -m src.action_log --actor sophie --action draft_approved --tickets
+TKT-XXXX --artifact <file> --note "<her words, quoted>"` — actor is sophie
+because the decision is hers; you are only the executor. The same applies to
+any chat decision she makes about your work item (agree/hold/reopen): log it
+as `--actor sophie --action note` quoting her instruction. Until such a line
+exists in out/actions.jsonl, remind anyone asking that the draft is
+unreleased. Never log a sophie-attributed action she did not state in chat.
 
 ## Audit trail (mandatory)
 After writing ANY artifact or recording a correction, log it — one command,
