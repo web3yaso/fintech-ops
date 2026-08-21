@@ -16,6 +16,10 @@ older entries into the digest when near the limit.
   confirmed cards, including TRD-001's TKT-2086 (MetricFox follow-up,
   correctly in-cluster) and continued exclusion of INC-002's TKT-2092 and
   TRD-001's TKT-2095. Treated as a clean re-file, not new incident activity.
+  Recurred a second time the same day (same three cards + out/actions.jsonl
+  gone again after the first re-file was committed) — re-verified and
+  re-filed again with identical numbers. The deletion is happening between
+  sessions, not within one; worth an infra look (sophie flagged this too).
 - 2026-08-20: no new actions.jsonl entries, corrections, or Ops War
   Room / Ops Standup messages since the 08-19 21:31 journal — quiet day,
   no update needed to INC-001/INC-002/TRD-001 or the domain facts below.
