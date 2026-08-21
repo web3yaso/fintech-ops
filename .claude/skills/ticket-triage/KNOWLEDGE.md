@@ -11,6 +11,11 @@ older entries into the digest when near the limit.
   (INC-001, 14 tkts/12 customers, $12,810 MRR), missing_usd_transfer
   (INC-002, 9 tkts/8 customers, $9,700 MRR, $58.5k stuck funds),
   fx_rate_complaints (TRD-001, 10 tkts/10 customers, $9,000 MRR at risk).
+- 2026-08-20: quiet day — no pipeline rerun, no new corrections
+  (feedback/corrections.jsonl unchanged since 08-19), no new room activity
+  addressed to triage (checked /api/bots), no pending skill proposals
+  (`src.skill_proposals list`). INC-001/INC-002/TRD-001 unchanged; see
+  incidents/, trends/, out/actions.jsonl for current state.
 
 ## Domain facts
 - Card-refund-not-credited tickets read similar to missing-wire tickets but
