@@ -3,7 +3,7 @@
 ### 📺 Watch the Walkthrough & Tutorial
 
 <a href="https://www.youtube.com/watch?v=Wi4qbXDddYA&list=PLXgJkPIISzPQ">
-  <img src="https://img.youtube.com/vi/Wi4qbXDddYA/maxresdefault.jpg" alt="Ops Control Tower — walkthrough & tutorial video" width="640">
+  <img src="reports/walkthrough-preview.png" alt="Ops Control Tower — walkthrough & tutorial video" width="640">
 </a>
 
 **▶ [Watch on YouTube](https://www.youtube.com/watch?v=Wi4qbXDddYA&list=PLXgJkPIISzPQ)**
