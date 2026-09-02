@@ -1,5 +1,12 @@
 # Ops Control Tower
 
+### 📺 Watch the Walkthrough & Tutorial
+
+**▶ [https://www.youtube.com/watch?v=Wi4qbXDddYA&list=PLXgJkPIISzPQ](https://www.youtube.com/watch?v=Wi4qbXDddYA&list=PLXgJkPIISzPQ)**
+&nbsp;·&nbsp; slides: [`reports/submission-deck.pdf`](reports/submission-deck.pdf)
+
+---
+
 **Ops doesn't need a faster version of the old way of working — it needs an
 AI-native one.** One human loop owner + four agents over a deterministic
 pipeline: detect cross-ticket patterns, investigate, hand findings to the
@@ -12,7 +19,7 @@ Real agent leverage is structural, not conversational.
 | effort | path |
 |---|---|
 | **2 seconds** | **[`reports/console-snapshot.pdf`](reports/console-snapshot.pdf)** renders right here on GitHub — a snapshot of a real run: the queue with every score explained, incident/trend cards with closure states, the $118k wire work package, the audit trail. The interactive original is [`console-snapshot.html`](reports/console-snapshot.html) — **download it and open locally** (GitHub shows HTML files as source, it never renders them; the email attachment is the same file) |
-| 3 minutes | 📹 video: _[link goes here]_ · weekly brief: `reports/ops-brief-2026-W33.html` |
+| 3 minutes | 📹 [video walkthrough](https://www.youtube.com/watch?v=Wi4qbXDddYA&list=PLXgJkPIISzPQ) · weekly brief: `reports/ops-brief-2026-W33.html` |
 | 30 minutes | `scripts/setup_demo.sh --dry-run` — recreates the live war room from the official signed OpenMausBot release (checksum- & notarization-verified, no sudo, offline by default without an API key) |
 
 ## The five questions, in one breath each
